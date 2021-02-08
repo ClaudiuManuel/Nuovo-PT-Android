@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryLightColor"
+    tools:context=".ui.AddClientFragment">
+
+    <Button
+        android:id="@+id/cancel_client_addition"
+        android:layout_width="144dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/secondaryColor"
+        android:text="CANCEL"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/confirm_client_addition"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/confirm_client_addition"
+        android:layout_width="144dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/secondaryColor"
+        android:text="Add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cancel_client_addition" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="412dp"
+        android:hint="Name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <EditText
+            android:id="@+id/editTextPersonName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            tools:layout_editor_absoluteX="97dp"
+            tools:layout_editor_absoluteY="229dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+
+        <RadioButton
+            android:id="@+id/radio_button_masculin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Masculin"
+            android:checked="true"
+            android:textAllCaps="true" />
+
+        <RadioButton
+            android:id="@+id/radio_button_feminin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Feminin"
+            android:textAllCaps="true" />
+
+
+    </RadioGroup>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
