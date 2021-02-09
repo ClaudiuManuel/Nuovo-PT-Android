@@ -40,6 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="412dp"
         android:hint="Name"
+        android:textColorHint="@color/secondaryTextColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -70,6 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Masculin"
+            android:textColor="@color/primaryTextColor"
             android:checked="true"
             android:textAllCaps="true" />
 
@@ -77,9 +79,9 @@
             android:id="@+id/radio_button_feminin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/primaryTextColor"
             android:text="Feminin"
             android:textAllCaps="true" />
-
 
     </RadioGroup>
 

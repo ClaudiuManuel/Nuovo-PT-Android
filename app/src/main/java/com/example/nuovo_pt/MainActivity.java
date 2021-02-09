@@ -2,14 +2,18 @@ package com.example.nuovo_pt;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.Menu;
 
+import com.example.nuovo_pt.ui.AddClientFragment;
+import com.example.nuovo_pt.ui.ClientWorkoutsFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -21,12 +25,14 @@ import androidx.appcompat.widget.Toolbar;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ClientsAdditionListener {
+public class MainActivity extends AppCompatActivity implements ClientsAdditionListener,NavigationView.OnNavigationItemSelectedListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     ClientsHolder clientsHolder;
     NavigationView navigationView;
     Menu navMenu;
+    NavController navController;
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
                         .setAction("Action", null).show();
             }
         });
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navMenu = navigationView.getMenu();
         // Passing each menu ID as a set of Ids because each
@@ -51,9 +57,10 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
                 R.id.nav_clients, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_add_client)
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        navigationView.setNavigationItemSelectedListener(this);
 
         clientsHolder = ClientsHolder.getInstance();
     }
@@ -76,5 +83,25 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
     public void addClient(Client client) {
         clientsHolder.addNewClient(client);
         navMenu.add(client.getName());
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if(id != R.id.nav_add_client) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.nav_host_fragment, new ClientWorkoutsFragment(new Client((String) item.getTitle(),true)))
+                    .commit();
+
+        } else {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.nav_host_fragment, new AddClientFragment())
+                    .commit();
+        }
+
+        getSupportActionBar().setTitle(item.getTitle());
+        drawer.close();
+        return true;
     }
 }
