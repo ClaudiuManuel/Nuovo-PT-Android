@@ -3,10 +3,13 @@ package com.example.nuovo_pt;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
+import com.example.nuovo_pt.api.ExerciseRepository;
+import com.example.nuovo_pt.api.OnGetAPIResponseCallBack;
+import com.example.nuovo_pt.api.Result;
 import com.example.nuovo_pt.ui.AddClientFragment;
 import com.example.nuovo_pt.ui.ClientWorkoutsFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,7 +25,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ClientsAdditionListener,NavigationView.OnNavigationItemSelectedListener {
@@ -33,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
     Menu navMenu;
     NavController navController;
     DrawerLayout drawer;
+    List<Result> exercises;
+    ExerciseRepository exerciseRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +45,6 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navMenu = navigationView.getMenu();
@@ -63,6 +60,10 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
         navigationView.setNavigationItemSelectedListener(this);
 
         clientsHolder = ClientsHolder.getInstance();
+
+        exerciseRepository = ExerciseRepository.getInstance();
+        exercises = new ArrayList<>();
+        //showExercises();
     }
 
     @Override
@@ -104,4 +105,25 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
         drawer.close();
         return true;
     }
+
+//    public void showExercises() {
+//        exerciseRepository.getExercises(new OnGetAPIResponseCallBack() {
+//            @Override
+//            public void onSuccess(List<Result> exerciseListFromAPI) {
+//                exercises = exerciseListFromAPI;
+//                StringBuilder stringBuilder = new StringBuilder();
+//                for (Result exercise : exerciseListFromAPI) {
+//                    stringBuilder.append(exercise.getName() + " /// ");
+//                }
+//                Toast.makeText(MainActivity.this, stringBuilder.toString(), Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            public void onError() {
+//                Log.d("exerciseERROR","error in main activity");
+//                Toast.makeText(MainActivity.this, "API error",
+//                        Toast.LENGTH_LONG).show();
+//            }
+//        });
+//    }
 }

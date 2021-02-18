@@ -11,6 +11,15 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="add_a_new_client">Add a new client</string>
+    <string-array name="muscle_groups_array">
+        <item>Chest</item>
+        <item>Back</item>
+        <item>Legs</item>
+        <item>Arms</item>
+        <item>Abs</item>
+        <item>Shoulders</item>
+        <item>Calves</item>
+    </string-array>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -100,4 +109,6 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

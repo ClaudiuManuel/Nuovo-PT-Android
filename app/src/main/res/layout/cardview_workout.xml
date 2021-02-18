@@ -36,6 +36,6 @@
             android:layout_gravity="center_horizontal"
             android:text="Targeted muscles" />
 
-    </LinearLayout>l
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>
