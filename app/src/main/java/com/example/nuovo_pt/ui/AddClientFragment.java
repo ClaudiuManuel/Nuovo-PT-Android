@@ -10,7 +10,7 @@ import android.widget.RadioGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.nuovo_pt.Client;
+import com.example.nuovo_pt.db.clients.Client;
 import com.example.nuovo_pt.ClientsAdditionListener;
 import com.example.nuovo_pt.R;
 
@@ -52,7 +52,7 @@ public class AddClientFragment extends Fragment implements View.OnClickListener 
             ClientsAdditionListener clientsAdditionListener = (ClientsAdditionListener) getActivity();
             String clientName = clientNameEditText.getText().toString();
             if(clientName.length() > 0)
-                clientsAdditionListener.addClient(new Client(clientName,isMale));
+                clientsAdditionListener.addClient(new Client(clientName,1));
         }
     }
     

@@ -1,5 +1,7 @@
 package com.example.nuovo_pt;
 
+import com.example.nuovo_pt.db.clients.Client;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,22 +1,22 @@
 package com.example.nuovo_pt;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
-import android.widget.Toast;
 
 import com.example.nuovo_pt.api.ExerciseRepository;
-import com.example.nuovo_pt.api.OnGetAPIResponseCallBack;
 import com.example.nuovo_pt.api.Result;
+import com.example.nuovo_pt.db.ClientViewModel;
+import com.example.nuovo_pt.db.WorkoutViewModel;
+import com.example.nuovo_pt.db.clients.Client;
 import com.example.nuovo_pt.ui.AddClientFragment;
 import com.example.nuovo_pt.ui.ClientWorkoutsFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
     DrawerLayout drawer;
     List<Result> exercises;
     ExerciseRepository exerciseRepository;
+    ClientViewModel clientViewModel;
+    WorkoutViewModel workoutViewModel;
+    boolean firstTimePopulated = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +66,20 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
 
         exerciseRepository = ExerciseRepository.getInstance();
         exercises = new ArrayList<>();
-        //showExercises();
+
+        clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
+        clientViewModel.getAllClients().observe(this, new Observer<List<Client>>() {
+            @Override
+            public void onChanged(@Nullable final List<Client> clients) {
+                if(firstTimePopulated) {
+                    populateNavMenu(clients);
+                    firstTimePopulated = false;
+                } else {
+                    navMenu.add(clients.get(clients.size()-1).getName());
+                }
+            }
+        });
+
     }
 
     @Override
@@ -82,8 +98,13 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
 
     @Override
     public void addClient(Client client) {
-        clientsHolder.addNewClient(client);
-        navMenu.add(client.getName());
+        clientViewModel.insert(client);
+    }
+
+    public void populateNavMenu(List<Client> clients) {
+        for(Client client:clients) {
+            navMenu.add(client.getName());
+        }
     }
 
     @Override
@@ -92,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
 
         if(id != R.id.nav_add_client) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.nav_host_fragment, new ClientWorkoutsFragment(new Client((String) item.getTitle(),true)))
+                    .replace(R.id.nav_host_fragment, new ClientWorkoutsFragment(new Client((String) item.getTitle(),1)))
                     .commit();
 
         } else {
