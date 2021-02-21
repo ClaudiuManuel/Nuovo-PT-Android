@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
     NavController navController;
     DrawerLayout drawer;
     List<Result> exercises;
-    ExerciseRepository exerciseRepository;
     ClientViewModel clientViewModel;
     WorkoutViewModel workoutViewModel;
     boolean firstTimePopulated = true;
@@ -64,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
 
         clientsHolder = ClientsHolder.getInstance();
 
-        exerciseRepository = ExerciseRepository.getInstance();
         exercises = new ArrayList<>();
 
         clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
@@ -127,24 +125,4 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
         return true;
     }
 
-//    public void showExercises() {
-//        exerciseRepository.getExercises(new OnGetAPIResponseCallBack() {
-//            @Override
-//            public void onSuccess(List<Result> exerciseListFromAPI) {
-//                exercises = exerciseListFromAPI;
-//                StringBuilder stringBuilder = new StringBuilder();
-//                for (Result exercise : exerciseListFromAPI) {
-//                    stringBuilder.append(exercise.getName() + " /// ");
-//                }
-//                Toast.makeText(MainActivity.this, stringBuilder.toString(), Toast.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            public void onError() {
-//                Log.d("exerciseERROR","error in main activity");
-//                Toast.makeText(MainActivity.this, "API error",
-//                        Toast.LENGTH_LONG).show();
-//            }
-//        });
-//    }
 }

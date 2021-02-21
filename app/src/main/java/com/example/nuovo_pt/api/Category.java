@@ -1,10 +1,9 @@
 package com.example.nuovo_pt.api;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Result {
+public class Category {
 
     @SerializedName("id")
     @Expose
@@ -12,12 +11,6 @@ public class Result {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("uuid")
-    @Expose
-    private String uuid;
-    @SerializedName("category")
-    @Expose
-    private Category category;
 
     public Integer getId() {
         return id;
@@ -34,21 +27,4 @@ public class Result {
     public void setName(String name) {
         this.name = name;
     }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
 }

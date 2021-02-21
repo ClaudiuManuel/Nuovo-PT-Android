@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.example.nuovo_pt.db.workouts.Workout;
@@ -35,6 +36,12 @@ public class Exercise {
         this.workoutID = workoutID;
     }
 
+    @Ignore
+    public Exercise(String exerciseName, String targetedMuscle) {
+        this.exerciseName = exerciseName;
+        this.targetedMuscle = targetedMuscle;
+    }
+
     public String getExerciseName() {
         return exerciseName;
     }
@@ -54,4 +61,9 @@ public class Exercise {
     public int getWorkoutID() {
         return workoutID;
     }
+
+    public void setWorkoutID(int workoutID) {
+        this.workoutID = workoutID;
+    }
+
 }

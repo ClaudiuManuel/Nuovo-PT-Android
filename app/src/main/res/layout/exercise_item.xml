@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="370dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="15dp"
+    >
+
+        <TextView
+            android:id="@+id/exercise_title"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Exercise name \n "
+            android:paddingLeft="5dp"
+            android:textColor="@color/secondaryColor"
+            android:background="@color/design_default_color_primary" />
+
+        <TextView
+            android:id="@+id/exercise_muscle"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:textSize="18sp"
+            android:text="Exercise name \n "
+            android:textColor="@color/secondaryLightColor"
+            android:background="@color/design_default_color_primary" />
+
+</LinearLayout>

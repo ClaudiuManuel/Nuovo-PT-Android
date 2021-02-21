@@ -9,10 +9,11 @@
     app:layout_constraintRight_toRightOf="parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:clickable="true"
-    app:cardCornerRadius="14dp"
+    app:cardCornerRadius="5dp"
     app:cardElevation="14dp"
     app:cardBackgroundColor="@color/secondaryColor"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:foreground="?android:attr/selectableItemBackground"
+    android:focusable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
