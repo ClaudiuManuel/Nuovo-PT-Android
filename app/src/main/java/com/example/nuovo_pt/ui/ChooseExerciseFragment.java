@@ -1,10 +1,12 @@
 package com.example.nuovo_pt.ui;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -43,8 +45,8 @@ public class ChooseExerciseFragment extends Fragment {
             @Override
             public void onItemClick(Exercise exercise) {
                 Exercise exerciseToBeAdded = new Exercise(exercise.getExerciseName(),exercise.getTargetedMuscle(),workout.getId());
-                System.out.println("on item click ->" + exerciseToBeAdded.getExerciseName() + "  " + exerciseToBeAdded.getWorkoutID());
                 exerciseViewModel.insert(exerciseToBeAdded);
+                Toast.makeText(getContext(), "Exercise added successfully to:  " + workout.getWorkoutName(), Toast.LENGTH_LONG).show();
             }
         });
         recyclerView.setAdapter(adapter);

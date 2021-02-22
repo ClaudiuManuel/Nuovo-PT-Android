@@ -2,6 +2,7 @@ package com.example.nuovo_pt.ui;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -21,11 +23,13 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.nuovo_pt.R;
 import com.example.nuovo_pt.db.WorkoutViewModel;
 import com.example.nuovo_pt.db.workouts.Workout;
+import com.google.android.material.snackbar.Snackbar;
 
 public class NewWorkoutFragment extends Fragment implements View.OnClickListener{
     String selectedMuscleGroup;
     EditText workoutNameEditText;
     private Button addNewWorkoutButton;
+    private Button cancelNewWorkoutButton;
     WorkoutViewModel workoutViewModel;
     String clientName;
 
@@ -39,6 +43,8 @@ public class NewWorkoutFragment extends Fragment implements View.OnClickListener
         View view = inflater.inflate(R.layout.fragment_workout, container, false);
         Spinner spinner = (Spinner) view.findViewById(R.id.muscle_groups_spinner);
         addNewWorkoutButton = view.findViewById(R.id.confirm_workout_addition);
+        cancelNewWorkoutButton = view.findViewById(R.id.cancel_workout_addition);
+        cancelNewWorkoutButton.setOnClickListener(this);
         addNewWorkoutButton.setOnClickListener(this);
         workoutNameEditText = view.findViewById(R.id.workoutNameEditText);
 
@@ -74,7 +80,13 @@ public class NewWorkoutFragment extends Fragment implements View.OnClickListener
             String workoutName = workoutNameEditText.getText().toString();
             if(workoutName.length() > 0) {
                 workoutViewModel.insert(new Workout(workoutName, selectedMuscleGroup, clientName));
+                workoutNameEditText.setText("");
+                Toast feedback = Toast.makeText(getContext(), "Workout added successfully:  " + workoutName, Toast.LENGTH_LONG);
+                feedback.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 230);
+                feedback.show();
             }
+        } else if(v == cancelNewWorkoutButton) {
+            workoutNameEditText.setText("");
         }
     }
 }

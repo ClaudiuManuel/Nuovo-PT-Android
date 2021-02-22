@@ -16,7 +16,7 @@
             android:text="Exercise name \n "
             android:paddingLeft="5dp"
             android:textColor="@color/secondaryColor"
-            android:background="@color/design_default_color_primary" />
+            android:background="#0505C8" />
 
         <TextView
             android:id="@+id/exercise_muscle"
@@ -29,6 +29,6 @@
             android:textSize="18sp"
             android:text="Exercise name \n "
             android:textColor="@color/secondaryLightColor"
-            android:background="@color/design_default_color_primary" />
+            android:background="#0505C8" />
 
 </LinearLayout>
