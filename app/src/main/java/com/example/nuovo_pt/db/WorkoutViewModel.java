@@ -19,7 +19,6 @@ public class WorkoutViewModel extends AndroidViewModel {
 
     public WorkoutViewModel(@NonNull Application application) {
         super(application);
-
     }
 
     public void initialise(Application application) {
@@ -39,7 +38,7 @@ public class WorkoutViewModel extends AndroidViewModel {
         workoutRepository.insert(workout);
     }
 
-    public void setAllClientName(String name) {
+    public void setClientName(String name) {
         this.clientName = name;
     }
 }

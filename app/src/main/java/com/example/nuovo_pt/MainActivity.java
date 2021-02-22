@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
     DrawerLayout drawer;
     List<Result> exercises;
     ClientViewModel clientViewModel;
+    Client clientToBeAdded = null;
+    Client previousClient = null;
     WorkoutViewModel workoutViewModel;
     boolean firstTimePopulated = true;
 
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_clients, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_add_client)
+                 R.id.nav_add_client)
                 .setDrawerLayout(drawer)
                 .build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -73,7 +75,16 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
                     populateNavMenu(clients);
                     firstTimePopulated = false;
                 } else {
-                    navMenu.add(clients.get(clients.size()-1).getName());
+                    if(previousClient == null && clientToBeAdded != null)
+                        if(clientToBeAdded.getIsMale() == 1)
+                            navMenu.add(clientToBeAdded.getName()).setIcon(getResources().getDrawable( R.drawable.male_icon ));
+                        else
+                            navMenu.add(clientToBeAdded.getName()).setIcon(getResources().getDrawable( R.drawable.female_icon));
+                    else if (!previousClient.getName().equals(clientToBeAdded.getName()))
+                        if(clientToBeAdded.getIsMale() == 1)
+                            navMenu.add(clientToBeAdded.getName()).setIcon(getResources().getDrawable( R.drawable.male_icon ));
+                        else
+                            navMenu.add(clientToBeAdded.getName()).setIcon(getResources().getDrawable( R.drawable.female_icon));
                 }
             }
         });
@@ -97,11 +108,16 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
     @Override
     public void addClient(Client client) {
         clientViewModel.insert(client);
+        previousClient = clientToBeAdded;
+        clientToBeAdded = client;
     }
 
     public void populateNavMenu(List<Client> clients) {
         for(Client client:clients) {
-            navMenu.add(client.getName());
+            if(client.getIsMale() == 0)
+                navMenu.add(client.getName()).setIcon(getResources().getDrawable( R.drawable.female_icon ));
+            else
+                navMenu.add(client.getName()).setIcon(getResources().getDrawable( R.drawable.male_icon ));
         }
     }
 
