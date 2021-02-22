@@ -17,7 +17,11 @@ import com.example.nuovo_pt.db.workouts.Workout;
     tableName = "exercises")
 public class Exercise {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    @ColumnInfo(name = "id")
+    private int id;
+
     @NonNull
     @ColumnInfo(name = "name")
     private String exerciseName;
@@ -26,7 +30,6 @@ public class Exercise {
     @ColumnInfo(name = "muscle")
     private String targetedMuscle;
 
-    @NonNull
     @ColumnInfo(name = "workoutID")
     private int workoutID;
 
@@ -64,6 +67,14 @@ public class Exercise {
 
     public void setWorkoutID(int workoutID) {
         this.workoutID = workoutID;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
 }

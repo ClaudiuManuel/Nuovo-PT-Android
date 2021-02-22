@@ -43,7 +43,7 @@ public class ChooseExerciseFragment extends Fragment {
             @Override
             public void onItemClick(Exercise exercise) {
                 Exercise exerciseToBeAdded = new Exercise(exercise.getExerciseName(),exercise.getTargetedMuscle(),workout.getId());
-                exerciseViewModel.setWorkoutID(workout.getId());
+                System.out.println("on item click ->" + exerciseToBeAdded.getExerciseName() + "  " + exerciseToBeAdded.getWorkoutID());
                 exerciseViewModel.insert(exerciseToBeAdded);
             }
         });

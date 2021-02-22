@@ -61,14 +61,14 @@ public class WorkoutExercisesFragment extends Fragment {
         exerciseRepository = ExerciseRepository.getInstance();
 
         exerciseViewModel = new ViewModelProvider(this).get(ExerciseViewModel.class);
-        exerciseViewModel.setWorkoutID(workout.getId());
-        exerciseViewModel.getAllWorkoutExercises().observe(getViewLifecycleOwner(), new Observer<List<Exercise>>() {
+        exerciseViewModel.getAllWorkoutExercises(workout.getId()).observe(getViewLifecycleOwner(), new Observer<List<Exercise>>() {
             @Override
             public void onChanged(@Nullable final List<Exercise> exercises) {
                 if(firstTimePopulated) {
                     populateExercises(inflater,container,exercises);
                     firstTimePopulated = false;
                 } else {
+                    System.out.println("on changed --> " + exercises.get(exercises.size()-1).getExerciseName() +  exercises.get(exercises.size()-1).getWorkoutID());
                     View exerciseItem = (View) inflater.inflate(R.layout.exercise_item, container ,false);
                     initialiseExerciseItem(exerciseItem,exercises.get(exercises.size()-1));
                 }

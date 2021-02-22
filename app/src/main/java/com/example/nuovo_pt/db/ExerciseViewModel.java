@@ -24,23 +24,24 @@ public class ExerciseViewModel extends AndroidViewModel {
     }
 
     public void initialise(Application application) {
-        exerciseRepository = new ExerciseRepository(application, workoutID);
-        allWorkoutExercises = exerciseRepository.getAllWorkoutExercises();
+        exerciseRepository = new ExerciseRepository(application);
     }
 
-    public LiveData<List<Exercise>> getAllWorkoutExercises() {
+    public LiveData<List<Exercise>> getAllWorkoutExercises(int workoutID) {
         if(!isInitialised)
             initialise(application);
+        allWorkoutExercises = exerciseRepository.getAllWorkoutExercises(workoutID);
         return allWorkoutExercises;
     }
 
     public void insert(Exercise exercise) {
         if(!isInitialised)
             initialise(application);
+        System.out.println("exercise view model insert");
         exerciseRepository.insert(exercise);
     }
 
-    public void setWorkoutID(Integer workoutID) {
-        this.workoutID = workoutID;
-    }
+//    public void setWorkoutID(Integer workoutID) {
+//        this.workoutID = workoutID;
+//    }
 }

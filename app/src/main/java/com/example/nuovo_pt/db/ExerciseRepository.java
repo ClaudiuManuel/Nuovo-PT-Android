@@ -13,18 +13,20 @@ public class ExerciseRepository {
     private ExerciseDao exerciseDao;
     private LiveData<List<Exercise>> allWorkoutExercises;
 
-    ExerciseRepository(Application application, int workoutID) {
+    ExerciseRepository(Application application) {
         NuovoRoomDatabase db = NuovoRoomDatabase.getDatabase(application);
         exerciseDao = db.exerciseDao();
-        allWorkoutExercises = exerciseDao.getWorkoutExercises(workoutID);
+
     }
 
-    LiveData<List<Exercise>> getAllWorkoutExercises() {
+    LiveData<List<Exercise>> getAllWorkoutExercises(int workoutID) {
+        allWorkoutExercises = exerciseDao.getWorkoutExercises(workoutID);
         return allWorkoutExercises;
     }
 
     void insert(Exercise exercise) {
         NuovoRoomDatabase.databaseWriteExecutor.execute(() -> {
+            System.out.println("exercise repository insert  " + exercise.getWorkoutID() + "  " + exercise.getExerciseName());
             exerciseDao.insert(exercise);
         });
     }
