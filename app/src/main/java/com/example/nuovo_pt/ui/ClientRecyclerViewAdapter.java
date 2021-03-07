@@ -32,13 +32,13 @@ public class ClientRecyclerViewAdapter extends RecyclerView.Adapter<ClientRecycl
             itemView.setOnClickListener(this);
         }
 
-        public void bind(Exercise exercise, OnItemClickListener listener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    listener.onItemClick(exercise);
-                }
-            });
-        }
+//        public void bind(Exercise exercise, OnItemClickListener listener) {
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override public void onClick(View v) {
+//                    listener.onItemClick(exercise);
+//                }
+//            });
+//        }
 
         @Override
         public void onClick(View v) {

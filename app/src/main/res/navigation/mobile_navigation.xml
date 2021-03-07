@@ -51,29 +51,55 @@
             android:defaultValue="0" />
         <action
             android:id="@+id/action_clientWorkoutsFragment_to_newWorkoutFragment2"
-            app:destination="@id/newWorkoutFragment2" />
+            app:destination="@id/newWorkoutFragment2"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
         <action
             android:id="@+id/action_clientWorkoutsFragment_to_workoutExercisesFragment2"
-            app:destination="@id/workoutExercisesFragment2" />
+            app:destination="@id/workoutExercisesFragment2"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/chooseExerciseFragment"
         android:name="com.example.nuovo_pt.ui.ChooseExerciseFragment"
         android:label="fragment_add_exercise"
-        tools:layout="@layout/fragment_add_exercise" />
+        tools:layout="@layout/fragment_add_exercise">
+        <argument
+        android:name="workoutID"
+        app:argType="integer"
+        />
+    </fragment>
     <fragment
         android:id="@+id/newWorkoutFragment2"
         android:name="com.example.nuovo_pt.ui.NewWorkoutFragment"
         android:label="fragment_workout"
-        tools:layout="@layout/fragment_workout" />
+        tools:layout="@layout/fragment_workout">
+        <argument
+            android:name="clientName"
+            app:argType="string"
+            android:defaultValue="0" />
+    </fragment>
     <fragment
         android:id="@+id/workoutExercisesFragment2"
         android:name="com.example.nuovo_pt.ui.WorkoutExercisesFragment"
         android:label="fragment_workouts_exercises"
         tools:layout="@layout/fragment_workouts_exercises" >
+        <argument
+            android:name="workoutID"
+            app:argType="integer"
+             />
         <action
             android:id="@+id/action_workoutExercisesFragment2_to_chooseExerciseFragment"
-            app:destination="@id/chooseExerciseFragment" />
+            app:destination="@id/chooseExerciseFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
     </fragment>
 
 </navigation>

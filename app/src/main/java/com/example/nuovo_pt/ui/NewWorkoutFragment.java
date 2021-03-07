@@ -15,10 +15,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.nuovo_pt.R;
 import com.example.nuovo_pt.db.WorkoutViewModel;
@@ -33,8 +36,14 @@ public class NewWorkoutFragment extends Fragment implements View.OnClickListener
     WorkoutViewModel workoutViewModel;
     String clientName;
 
-    public NewWorkoutFragment(String clientName) {
-        this.clientName = clientName;
+    public NewWorkoutFragment() {
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        clientName = getArguments().getString("clientName");
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,7 +95,7 @@ public class NewWorkoutFragment extends Fragment implements View.OnClickListener
                 feedback.show();
             }
         } else if(v == cancelNewWorkoutButton) {
-            workoutNameEditText.setText("");
+            getActivity().onBackPressed();
         }
     }
 }

@@ -59,7 +59,6 @@ public class AddClientFragment extends Fragment implements View.OnClickListener 
         if(v == addNewClientButton) {
             ClientsAdditionListener clientsAdditionListener = (ClientsAdditionListener) getActivity();
             String clientName = clientNameEditText.getText().toString();
-            System.out.println(clientName + "   on click add client");
             if(clientName.length() > 0) {
                 if (isMale)
                     clientsAdditionListener.addClient(new Client(clientName, 1));

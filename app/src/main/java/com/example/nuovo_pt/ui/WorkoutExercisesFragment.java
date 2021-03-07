@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.nuovo_pt.R;
 import com.example.nuovo_pt.api.ExerciseRepository;
@@ -27,19 +29,32 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorkoutExercisesFragment extends Fragment {
-    Workout workout;
+public class WorkoutExercisesFragment extends Fragment implements View.OnClickListener{
+    int workoutID;
     LinearLayout exercisesLayout;
     ExerciseViewModel exerciseViewModel;
     boolean firstTimePopulated = true;
     TextView exerciseTitle;
     TextView exerciseMuscle;
+    FloatingActionButton fab;
+    NavController navController;
 
-    ExerciseRepository exerciseRepository;
-    List<Exercise> exercises = new ArrayList<Exercise>();
+    public WorkoutExercisesFragment() {
 
-    public WorkoutExercisesFragment(Workout workout) {
-        this.workout = workout;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        workoutID = getArguments().getInt("workoutID");
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        fab = view.findViewById(R.id.fab_add_exercise);
+        fab.setOnClickListener(this);
+        navController = Navigation.findNavController(view);
     }
 
     @Nullable
@@ -50,58 +65,19 @@ public class WorkoutExercisesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_workouts_exercises, container, false);
         exercisesLayout = view.findViewById(R.id.exercises_layout);
 
-        FloatingActionButton fab = view.findViewById(R.id.fab_add_exercise);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                 getExercisesFromAPI();
-            }
-        });
-
-        exerciseRepository = ExerciseRepository.getInstance();
-
         exerciseViewModel = new ViewModelProvider(this).get(ExerciseViewModel.class);
-        exerciseViewModel.getAllWorkoutExercises(workout.getId()).observe(getViewLifecycleOwner(), new Observer<List<Exercise>>() {
+        exerciseViewModel.getAllWorkoutExercises(workoutID).observe(getViewLifecycleOwner(), new Observer<List<Exercise>>() {
             @Override
             public void onChanged(@Nullable final List<Exercise> exercises) {
                 if(firstTimePopulated) {
                     populateExercises(inflater,container,exercises);
-                    firstTimePopulated = false;
                 } else {
-                    System.out.println("on changed --> " + exercises.get(exercises.size()-1).getExerciseName() +  exercises.get(exercises.size()-1).getWorkoutID());
                     View exerciseItem = (View) inflater.inflate(R.layout.exercise_item, container ,false);
                     initialiseExerciseItem(exerciseItem,exercises.get(exercises.size()-1));
                 }
             }
         });
         return view;
-    }
-
-    public void getExercisesFromAPI() {
-        exerciseRepository.getExercises(new OnGetAPIResponseCallBack() {
-            @Override
-            public void onSuccess(List<Result> exerciseListFromAPI) {
-                exercises = mapResultToExercise(exerciseListFromAPI);
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.nav_host_fragment, new ChooseExerciseFragment(exercises,workout))
-                        .commit();
-            }
-
-            @Override
-            public void onError() {
-                Log.d("exerciseERROR","error in getting exercises from API");
-                Toast.makeText(getContext(), "API error",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private List<Exercise> mapResultToExercise(List<Result> exerciseListFromAPI) {
-        List<Exercise> exerciseList = new ArrayList<>();
-        for (Result result : exerciseListFromAPI) {
-            exerciseList.add(new Exercise(result.getName(),result.getCategory().getName()));
-        }
-        return exerciseList;
     }
 
     void populateExercises(LayoutInflater inflater, ViewGroup container, List<Exercise> exercises) {
@@ -119,4 +95,12 @@ public class WorkoutExercisesFragment extends Fragment {
         exercisesLayout.addView(exerciseItem);
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v != null && v == fab) {
+            Bundle bundle = new Bundle();
+            bundle.putInt("workoutID", workoutID);
+            navController.navigate(R.id.action_workoutExercisesFragment2_to_chooseExerciseFragment, bundle);
+        }
+    }
 }

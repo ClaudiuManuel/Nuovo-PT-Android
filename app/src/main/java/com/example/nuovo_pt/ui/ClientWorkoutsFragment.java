@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.nuovo_pt.api.ExerciseRepository;
 import com.example.nuovo_pt.api.OnGetAPIResponseCallBack;
@@ -36,8 +38,10 @@ public class ClientWorkoutsFragment extends Fragment implements View.OnClickList
     TextView workoutTitle;
     TextView workoutMuscle;
     List<Workout> workoutList;
+    NavController navController = null;
     WorkoutViewModel workoutViewModel;
     boolean firstTimePopulated = true;
+    FloatingActionButton fab;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,23 +53,21 @@ public class ClientWorkoutsFragment extends Fragment implements View.OnClickList
 
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+        workoutsLayout = view.findViewById(R.id.workouts_layout);
+        fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_client_workouts, container, false);
-        workoutsLayout = view.findViewById(R.id.workouts_layout);
-
-        FloatingActionButton fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.nav_host_fragment, new NewWorkoutFragment(clientName))
-                        .commit();
-            }
-        });
 
         workoutViewModel = new ViewModelProvider(this).get(WorkoutViewModel.class);
         workoutViewModel.setClientName(clientName);
@@ -75,11 +77,11 @@ public class ClientWorkoutsFragment extends Fragment implements View.OnClickList
                 if(firstTimePopulated) {
                     workoutList = workouts;
                     populateWorkoutsFragment(inflater,container,workouts);
-                    firstTimePopulated = false;
-                } else {
-                    View cardviewWorkout = (View) inflater.inflate(R.layout.cardview_workout, container ,false);
-                    initialiseWorkoutCardview(cardviewWorkout,workouts.get(workouts.size()-1));
                 }
+//                else {
+//                    View cardviewWorkout = (View) inflater.inflate(R.layout.cardview_workout, container ,false);
+//                    initialiseWorkoutCardview(cardviewWorkout,workouts.get(workouts.size()-1));
+//                }
             }
         });
 
@@ -104,19 +106,25 @@ public class ClientWorkoutsFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        TextView workoutTitleTextView = v.findViewById(R.id.workoutCardView).findViewById(R.id.workoutTitle);
-        String workoutTitle = workoutTitleTextView.getText().toString();
-        System.out.println(workoutList);
-        getFragmentManager().beginTransaction()
-                .replace(R.id.nav_host_fragment, new WorkoutExercisesFragment(searchWorkouts(workoutList,workoutTitle)))
-                .commit();
+        if(v != null && v==fab) {
+            Bundle bundle = new Bundle();
+            bundle.putString("clientName",clientName);
+            navController.navigate(R.id.action_clientWorkoutsFragment_to_newWorkoutFragment2,bundle);
+        } else {
+            TextView workoutTitleTextView = v.findViewById(R.id.workoutCardView).findViewById(R.id.workoutTitle);
+            String workoutTitle = workoutTitleTextView.getText().toString();
+            int workoutID = searchWorkouts(workoutList,workoutTitle);
+            Bundle bundle = new Bundle();
+            bundle.putInt("workoutID",workoutID);
+            navController.navigate(R.id.action_clientWorkoutsFragment_to_workoutExercisesFragment2,bundle);
+        }
     }
 
-    public Workout searchWorkouts(List<Workout> workouts, String workoutTitle) {
+    public int searchWorkouts(List<Workout> workouts, String workoutTitle) {
         for(Workout workout:workouts) {
             if(workout.getWorkoutName().equals(workoutTitle))
-                return workout;
+                return workout.getId();
         }
-        return null;
+        return -1;
     }
 }
