@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientWorkoutsFragment extends Fragment implements View.OnClickListener {
-    Client client;
+    String clientName;
     LinearLayout workoutsLayout;
     CardView workoutCardView;
     TextView workoutTitle;
@@ -39,8 +39,14 @@ public class ClientWorkoutsFragment extends Fragment implements View.OnClickList
     WorkoutViewModel workoutViewModel;
     boolean firstTimePopulated = true;
 
-    public ClientWorkoutsFragment(Client client) {
-        this.client = client;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        clientName = getArguments().getString("clientName");
+    }
+
+    public ClientWorkoutsFragment() {
+
     }
 
     @Nullable
@@ -56,13 +62,13 @@ public class ClientWorkoutsFragment extends Fragment implements View.OnClickList
             @Override
             public void onClick(View view) {
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.nav_host_fragment, new NewWorkoutFragment(client.getName()))
+                        .replace(R.id.nav_host_fragment, new NewWorkoutFragment(clientName))
                         .commit();
             }
         });
 
         workoutViewModel = new ViewModelProvider(this).get(WorkoutViewModel.class);
-        workoutViewModel.setClientName(client.getName());
+        workoutViewModel.setClientName(clientName);
         workoutViewModel.getAllClientWorkouts().observe(getViewLifecycleOwner(), new Observer<List<Workout>>() {
             @Override
             public void onChanged(@Nullable final List<Workout> workouts) {

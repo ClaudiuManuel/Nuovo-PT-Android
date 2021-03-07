@@ -28,7 +28,7 @@ import androidx.appcompat.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ClientsAdditionListener,NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements ClientsAdditionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     ClientsHolder clientsHolder;
@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
     ClientViewModel clientViewModel;
     Client clientToBeAdded = null;
     Client previousClient = null;
-    WorkoutViewModel workoutViewModel;
     boolean firstTimePopulated = true;
 
     @Override
@@ -55,39 +54,19 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                 R.id.nav_add_client)
+                 R.id.homeStartingPoint,R.id.aboutUs)
                 .setDrawerLayout(drawer)
                 .build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        navigationView.setNavigationItemSelectedListener(this);
+//        navigationView.setNavigationItemSelectedListener(this);
 
         clientsHolder = ClientsHolder.getInstance();
+        clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
 
         exercises = new ArrayList<>();
 
-        clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
-        clientViewModel.getAllClients().observe(this, new Observer<List<Client>>() {
-            @Override
-            public void onChanged(@Nullable final List<Client> clients) {
-                if(firstTimePopulated) {
-                    populateNavMenu(clients);
-                    firstTimePopulated = false;
-                } else {
-                    if(previousClient == null && clientToBeAdded != null)
-                        if(clientToBeAdded.getIsMale() == 1)
-                            navMenu.add(clientToBeAdded.getName()).setIcon(getResources().getDrawable( R.drawable.male_icon ));
-                        else
-                            navMenu.add(clientToBeAdded.getName()).setIcon(getResources().getDrawable( R.drawable.female_icon));
-                    else if (!previousClient.getName().equals(clientToBeAdded.getName()))
-                        if(clientToBeAdded.getIsMale() == 1)
-                            navMenu.add(clientToBeAdded.getName()).setIcon(getResources().getDrawable( R.drawable.male_icon ));
-                        else
-                            navMenu.add(clientToBeAdded.getName()).setIcon(getResources().getDrawable( R.drawable.female_icon));
-                }
-            }
-        });
 
     }
 
@@ -111,34 +90,5 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
         previousClient = clientToBeAdded;
         clientToBeAdded = client;
     }
-
-    public void populateNavMenu(List<Client> clients) {
-        for(Client client:clients) {
-            if(client.getIsMale() == 0)
-                navMenu.add(client.getName()).setIcon(getResources().getDrawable( R.drawable.female_icon ));
-            else
-                navMenu.add(client.getName()).setIcon(getResources().getDrawable( R.drawable.male_icon ));
-        }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        if(id != R.id.nav_add_client) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.nav_host_fragment, new ClientWorkoutsFragment(new Client((String) item.getTitle(),1)))
-                    .commit();
-
-        } else {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.nav_host_fragment, new AddClientFragment())
-                    .commit();
-        }
-
-        getSupportActionBar().setTitle(item.getTitle());
-        drawer.close();
-        return true;
-    }
-
+    
 }

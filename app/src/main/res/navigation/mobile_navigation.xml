@@ -3,12 +3,77 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_add_client">
+    app:startDestination="@+id/homeStartingPoint">
 
     <fragment
         android:id="@+id/nav_add_client"
         android:name="com.example.nuovo_pt.ui.AddClientFragment"
         android:label="Add a new client"
         tools:layout="@layout/fragment_add_client" />
+    <fragment
+        android:id="@+id/aboutUs"
+        android:name="com.example.nuovo_pt.ui.AboutUs"
+        android:label="About us"
+        tools:layout="@layout/fragment_about_us" />
+    <fragment
+        android:id="@+id/homeStartingPoint"
+        android:name="com.example.nuovo_pt.ui.HomeStartingPoint"
+        android:label="Home"
+        tools:layout="@layout/fragment_home_starting_point" >
+        <action
+            android:id="@+id/action_homeStartingPoint_to_nav_add_client"
+            app:destination="@id/nav_add_client"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_homeStartingPoint_to_clientWorkoutsFragment"
+            app:destination="@id/clientWorkoutsFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+    </fragment>
+    <fragment
+        android:id="@+id/savedWorkouts"
+        android:name="com.example.nuovo_pt.ui.SavedWorkouts"
+        android:label="Saved workouts"
+        tools:layout="@layout/fragment_saved_workouts" />
+    <fragment
+        android:id="@+id/clientWorkoutsFragment"
+        android:name="com.example.nuovo_pt.ui.ClientWorkoutsFragment"
+        android:label="fragment_client_workouts"
+        tools:layout="@layout/fragment_client_workouts" >
+        <argument
+            android:name="clientName"
+            app:argType="string"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_clientWorkoutsFragment_to_newWorkoutFragment2"
+            app:destination="@id/newWorkoutFragment2" />
+        <action
+            android:id="@+id/action_clientWorkoutsFragment_to_workoutExercisesFragment2"
+            app:destination="@id/workoutExercisesFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/chooseExerciseFragment"
+        android:name="com.example.nuovo_pt.ui.ChooseExerciseFragment"
+        android:label="fragment_add_exercise"
+        tools:layout="@layout/fragment_add_exercise" />
+    <fragment
+        android:id="@+id/newWorkoutFragment2"
+        android:name="com.example.nuovo_pt.ui.NewWorkoutFragment"
+        android:label="fragment_workout"
+        tools:layout="@layout/fragment_workout" />
+    <fragment
+        android:id="@+id/workoutExercisesFragment2"
+        android:name="com.example.nuovo_pt.ui.WorkoutExercisesFragment"
+        android:label="fragment_workouts_exercises"
+        tools:layout="@layout/fragment_workouts_exercises" >
+        <action
+            android:id="@+id/action_workoutExercisesFragment2_to_chooseExerciseFragment"
+            app:destination="@id/chooseExerciseFragment" />
+    </fragment>
 
 </navigation>

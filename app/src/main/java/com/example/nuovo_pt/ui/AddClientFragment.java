@@ -11,6 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 
 import com.example.nuovo_pt.db.clients.Client;
 import com.example.nuovo_pt.ClientsAdditionListener;
@@ -20,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar;
 public class AddClientFragment extends Fragment implements View.OnClickListener {
     private EditText clientNameEditText;
     private RadioGroup clientSexRadioGrup;
+    NavController navController;
     private boolean isMale=true;
     private Button addNewClientButton;
     private Button cancelNewClientButton;
@@ -69,7 +71,7 @@ public class AddClientFragment extends Fragment implements View.OnClickListener 
                 feedback.show();
             }
         } else if(v == cancelNewClientButton) {
-            clientNameEditText.setText("");
+            getActivity().onBackPressed();
         }
     }
     

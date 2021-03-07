@@ -6,9 +6,13 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_add_client"
+            android:id="@+id/homeStartingPoint"
             android:icon="@android:drawable/ic_menu_add"
-            android:title="Add new client" />
+            android:title="Home" />
+        <item
+            android:id="@+id/aboutUs"
+            android:icon="@android:drawable/ic_menu_add"
+            android:title="About Us" />
 
     </group>
 </menu>
