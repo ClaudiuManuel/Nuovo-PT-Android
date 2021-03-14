@@ -71,7 +71,7 @@
         tools:layout="@layout/fragment_add_exercise">
         <argument
         android:name="workoutID"
-        app:argType="integer"
+        app:argType="string"
         />
     </fragment>
     <fragment
@@ -91,7 +91,7 @@
         tools:layout="@layout/fragment_workouts_exercises" >
         <argument
             android:name="workoutID"
-            app:argType="integer"
+            app:argType="string"
              />
         <action
             android:id="@+id/action_workoutExercisesFragment2_to_chooseExerciseFragment"

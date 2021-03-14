@@ -23,21 +23,32 @@ import com.example.nuovo_pt.api.OnGetAPIResponseCallBack;
 import com.example.nuovo_pt.api.Result;
 import com.example.nuovo_pt.db.ExerciseViewModel;
 import com.example.nuovo_pt.db.exercises.Exercise;
+import com.example.nuovo_pt.db.exercises.ExerciseFirebase;
 import com.example.nuovo_pt.db.workouts.Workout;
+import com.example.nuovo_pt.db.workouts.WorkoutFirebase;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class WorkoutExercisesFragment extends Fragment implements View.OnClickListener{
-    int workoutID;
+    String workoutID;
     LinearLayout exercisesLayout;
     ExerciseViewModel exerciseViewModel;
     boolean firstTimePopulated = true;
     TextView exerciseTitle;
     TextView exerciseMuscle;
     FloatingActionButton fab;
+    LayoutInflater inflater;
+    ViewGroup container;
     NavController navController;
+    DatabaseReference databaseReference;
+    List<ExerciseFirebase> exercises = new ArrayList<>();
 
     public WorkoutExercisesFragment() {
 
@@ -46,7 +57,7 @@ public class WorkoutExercisesFragment extends Fragment implements View.OnClickLi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        workoutID = getArguments().getInt("workoutID");
+        workoutID = getArguments().getString("workoutID");
     }
 
     @Override
@@ -64,34 +75,49 @@ public class WorkoutExercisesFragment extends Fragment implements View.OnClickLi
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_workouts_exercises, container, false);
         exercisesLayout = view.findViewById(R.id.exercises_layout);
+        databaseReference = FirebaseDatabase.getInstance().getReference("Exercises");
+        this.inflater = inflater;
+        this.container = container;
 
-        exerciseViewModel = new ViewModelProvider(this).get(ExerciseViewModel.class);
-        exerciseViewModel.getAllWorkoutExercises(workoutID).observe(getViewLifecycleOwner(), new Observer<List<Exercise>>() {
-            @Override
-            public void onChanged(@Nullable final List<Exercise> exercises) {
-                if(firstTimePopulated) {
-                    populateExercises(inflater,container,exercises);
-                } else {
-                    View exerciseItem = (View) inflater.inflate(R.layout.exercise_item, container ,false);
-                    initialiseExerciseItem(exerciseItem,exercises.get(exercises.size()-1));
-                }
-            }
-        });
         return view;
     }
 
-    void populateExercises(LayoutInflater inflater, ViewGroup container, List<Exercise> exercises) {
-        for(Exercise exercise:exercises) {
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                exercises.clear();
+                for(DataSnapshot exerciseSnapShot : snapshot.getChildren()) {
+                    ExerciseFirebase exerciseFirebase = exerciseSnapShot.getValue(ExerciseFirebase.class);
+                    if(exerciseFirebase.getWorkoutID().equals(workoutID) )
+                        exercises.add(exerciseFirebase);
+                }
+
+                populateExercises(exercises);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    void populateExercises(List<ExerciseFirebase> exercises) {
+        for(ExerciseFirebase exercise:exercises) {
             View exerciseItem = (View) inflater.inflate(R.layout.exercise_item, container ,false);
             initialiseExerciseItem(exerciseItem,exercise);
         }
     }
 
-    void initialiseExerciseItem(View exerciseItem, Exercise exercise) {
+    void initialiseExerciseItem(View exerciseItem, ExerciseFirebase exercise) {
         exerciseTitle = exerciseItem.findViewById(R.id.exercise_title);
         exerciseMuscle = exerciseItem.findViewById(R.id.exercise_muscle);
         exerciseTitle.setText(exercise.getExerciseName());
-        exerciseMuscle.setText(exercise.getTargetedMuscle());
+        exerciseMuscle.setText(exercise.getMuscleTargeted());
         exercisesLayout.addView(exerciseItem);
     }
 
@@ -99,7 +125,7 @@ public class WorkoutExercisesFragment extends Fragment implements View.OnClickLi
     public void onClick(View v) {
         if (v != null && v == fab) {
             Bundle bundle = new Bundle();
-            bundle.putInt("workoutID", workoutID);
+            bundle.putString("workoutID", workoutID);
             navController.navigate(R.id.action_workoutExercisesFragment2_to_chooseExerciseFragment, bundle);
         }
     }

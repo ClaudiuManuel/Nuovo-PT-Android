@@ -13,10 +13,10 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 
-import com.example.nuovo_pt.db.clients.Client;
-import com.example.nuovo_pt.ClientsAdditionListener;
 import com.example.nuovo_pt.R;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.nuovo_pt.db.clients.ClientFirebase;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class AddClientFragment extends Fragment implements View.OnClickListener {
     private EditText clientNameEditText;
@@ -25,11 +25,13 @@ public class AddClientFragment extends Fragment implements View.OnClickListener 
     private boolean isMale=true;
     private Button addNewClientButton;
     private Button cancelNewClientButton;
+    private DatabaseReference databaseReference;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_client, container, false);
+        databaseReference = FirebaseDatabase.getInstance().getReference("Clients");
         clientNameEditText = view.findViewById(R.id.editTextPersonName);
         clientSexRadioGrup = view.findViewById(R.id.radioGroup);
         addNewClientButton = view.findViewById(R.id.confirm_client_addition);
@@ -57,14 +59,16 @@ public class AddClientFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         if(v == addNewClientButton) {
-            ClientsAdditionListener clientsAdditionListener = (ClientsAdditionListener) getActivity();
             String clientName = clientNameEditText.getText().toString();
             if(clientName.length() > 0) {
-                if (isMale)
-                    clientsAdditionListener.addClient(new Client(clientName, 1));
-                else
-                    clientsAdditionListener.addClient(new Client(clientName, 0));
-                clientNameEditText.setText("");
+                if (isMale) {
+                    ClientFirebase clientFirebase = new ClientFirebase(clientName,true);
+                    databaseReference.child(clientName).setValue(clientFirebase);
+                } else {
+                    ClientFirebase clientFirebase = new ClientFirebase(clientName,false);
+                    databaseReference.child(clientName).setValue(clientFirebase);
+                }
+                    clientNameEditText.setText("");
                 Toast feedback = Toast.makeText(getContext(), "Client added successfully:  " + clientName, Toast.LENGTH_LONG);
                 feedback.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 230);
                 feedback.show();

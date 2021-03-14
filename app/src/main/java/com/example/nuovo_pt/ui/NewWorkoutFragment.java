@@ -26,7 +26,10 @@ import androidx.navigation.Navigation;
 import com.example.nuovo_pt.R;
 import com.example.nuovo_pt.db.WorkoutViewModel;
 import com.example.nuovo_pt.db.workouts.Workout;
+import com.example.nuovo_pt.db.workouts.WorkoutFirebase;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class NewWorkoutFragment extends Fragment implements View.OnClickListener{
     String selectedMuscleGroup;
@@ -35,6 +38,7 @@ public class NewWorkoutFragment extends Fragment implements View.OnClickListener
     private Button cancelNewWorkoutButton;
     WorkoutViewModel workoutViewModel;
     String clientName;
+    private DatabaseReference databaseReference;
 
     public NewWorkoutFragment() {
 
@@ -50,6 +54,7 @@ public class NewWorkoutFragment extends Fragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_workout, container, false);
+        databaseReference = FirebaseDatabase.getInstance().getReference("Workouts");
         Spinner spinner = (Spinner) view.findViewById(R.id.muscle_groups_spinner);
         addNewWorkoutButton = view.findViewById(R.id.confirm_workout_addition);
         cancelNewWorkoutButton = view.findViewById(R.id.cancel_workout_addition);
@@ -88,7 +93,10 @@ public class NewWorkoutFragment extends Fragment implements View.OnClickListener
         if(v == addNewWorkoutButton) {
             String workoutName = workoutNameEditText.getText().toString();
             if(workoutName.length() > 0) {
-                workoutViewModel.insert(new Workout(workoutName, selectedMuscleGroup, clientName));
+//                workoutViewModel.insert(new Workout(workoutName, selectedMuscleGroup, clientName));
+                String workoutID = databaseReference.push().getKey();
+                WorkoutFirebase workoutFirebase = new WorkoutFirebase(workoutID,workoutName,selectedMuscleGroup,clientName);
+                databaseReference.child(workoutID).setValue(workoutFirebase);
                 workoutNameEditText.setText("");
                 Toast feedback = Toast.makeText(getContext(), "Workout added successfully:  " + workoutName, Toast.LENGTH_LONG);
                 feedback.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 230);

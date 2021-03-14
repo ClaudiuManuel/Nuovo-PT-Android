@@ -1,13 +1,10 @@
 package com.example.nuovo_pt.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -18,11 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.nuovo_pt.LoginActivity;
 import com.example.nuovo_pt.R;
 import com.example.nuovo_pt.db.ClientViewModel;
 import com.example.nuovo_pt.db.clients.Client;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.nuovo_pt.db.clients.ClientFirebase;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,8 @@ public class HomeStartingPoint extends Fragment implements View.OnClickListener,
     ClientRecyclerViewAdapter adapter;
     ClientViewModel clientViewModel;
     boolean firstTimePopulated = true;
+    private DatabaseReference databaseReference;
+    List<ClientFirebase> clientList = new ArrayList<>();
 
     public HomeStartingPoint() {
         // Required empty public constructor
@@ -47,22 +50,35 @@ public class HomeStartingPoint extends Fragment implements View.OnClickListener,
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                clientList.clear();
+                for(DataSnapshot clientSnapShot : snapshot.getChildren()) {
+                    ClientFirebase client = clientSnapShot.getValue(ClientFirebase.class);
+                    clientList.add(client);
+                }
+
+                populateClientCardviews(clientList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_starting_point, container, false);
 
-        clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
-        clientViewModel.getAllClients().observe(getViewLifecycleOwner(), new Observer<List<Client>>() {
-            @Override
-            public void onChanged(@Nullable List<Client> clientsList) {
-                if(firstTimePopulated) {
-                    populateClientCarviews(clientsList);
-                } else {
-                    notifyClientListChanges(clientsList);
-                }
-            }
-        });
+        databaseReference = FirebaseDatabase.getInstance().getReference("Clients");
 
         recyclerView = view.findViewById(R.id.clients_recyclerview);
         recyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
@@ -72,12 +88,7 @@ public class HomeStartingPoint extends Fragment implements View.OnClickListener,
         return view;
     }
 
-    private void notifyClientListChanges(List<Client> clientsList) {
-        adapter.setClients(clientsList);
-        adapter.notifyDataSetChanged();
-    }
-
-    public void populateClientCarviews(List<Client> clients) {
+    public void populateClientCardviews(List<ClientFirebase> clients) {
         adapter = new ClientRecyclerViewAdapter(this.getContext(),clients);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);

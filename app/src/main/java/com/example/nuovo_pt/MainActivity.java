@@ -32,7 +32,7 @@ import androidx.appcompat.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ClientsAdditionListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     ClientsHolder clientsHolder;
@@ -89,13 +89,6 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
-    }
-
-    @Override
-    public void addClient(Client client) {
-        clientViewModel.insert(client);
-        previousClient = clientToBeAdded;
-        clientToBeAdded = client;
     }
 
     @Override

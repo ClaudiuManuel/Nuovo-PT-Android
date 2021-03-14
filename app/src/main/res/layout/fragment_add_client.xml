@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primaryLightColor"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context=".ui.AddClientFragment">
 
     <Button
@@ -36,52 +38,88 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
-        android:layout_width="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="412dp"
-        android:hint="Name"
-        android:textColorHint="@color/secondaryTextColor"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
+        android:hint="Client name"
+        android:textColorHint="@color/secondaryColor"
+        app:boxStrokeColor="@color/secondaryColor"
+        app:hintTextColor="@color/secondaryColor"
+        app:layout_constraintBottom_toTopOf="@id/textInputLayoutGym"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextPersonName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            tools:layout_editor_absoluteX="97dp"
-            tools:layout_editor_absoluteY="229dp" />
+            android:textColorHint="@color/secondaryColor" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutGym"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
+        android:hint="Gym"
+        android:textColorHint="@color/secondaryColor"
+        app:boxStrokeColor="@color/secondaryColor"
+        app:hintTextColor="@color/secondaryColor"
+        app:layout_constraintBottom_toTopOf="@id/radioGroup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextGym"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/secondaryColor"
+            tools:layout_editor_absoluteX="20dp"
+            tools:layout_editor_absoluteY="447dp" />
+
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+        app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
             android:id="@+id/radio_button_masculin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Masculin"
-            android:textColor="@color/primaryTextColor"
             android:checked="true"
-            android:textAllCaps="true" />
+            android:text="Male"
+            android:textAllCaps="true"
+            android:textColor="@color/primaryTextColor"/>
 
         <RadioButton
             android:id="@+id/radio_button_feminin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/primaryTextColor"
-            android:text="Feminin"
-            android:textAllCaps="true" />
+            android:text="Female"
+            android:textAllCaps="true"
+            android:textColor="@color/primaryTextColor"/>
 
     </RadioGroup>
 

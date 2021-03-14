@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.nuovo_pt.OnItemClickListener;
 import com.example.nuovo_pt.R;
 import com.example.nuovo_pt.db.clients.Client;
+import com.example.nuovo_pt.db.clients.ClientFirebase;
 import com.example.nuovo_pt.db.exercises.Exercise;
 
 import java.util.List;
@@ -46,10 +47,10 @@ public class ClientRecyclerViewAdapter extends RecyclerView.Adapter<ClientRecycl
         }
     }
 
-    private List<Client> clients;
+    private List<ClientFirebase> clients;
     private LayoutInflater mInflater;
 
-    ClientRecyclerViewAdapter(Context context,List<Client> clients) {
+    ClientRecyclerViewAdapter(Context context,List<ClientFirebase> clients) {
         this.clients = clients;
         mInflater = LayoutInflater.from(context);
     }
@@ -64,7 +65,7 @@ public class ClientRecyclerViewAdapter extends RecyclerView.Adapter<ClientRecycl
     @Override
     public void onBindViewHolder(@NonNull ClientViewHolder holder, int position) {
         holder.clientNameTextview.setText(clients.get(position).getName());
-        if(clients.get(position).getIsMale() == 0)
+        if(clients.get(position).getIsMale() == false)
             holder.clientIcon.setImageResource(R.drawable.female);
     }
 
@@ -75,7 +76,7 @@ public class ClientRecyclerViewAdapter extends RecyclerView.Adapter<ClientRecycl
         else return 0;
     }
 
-    public void setClients(List<Client> clients) {
+    public void setClients(List<ClientFirebase> clients) {
         this.clients = clients;
     }
 
@@ -83,7 +84,7 @@ public class ClientRecyclerViewAdapter extends RecyclerView.Adapter<ClientRecycl
         this.mClickListener = itemClickListener;
     }
 
-    Client getClient(int position) {
+    ClientFirebase getClient(int position) {
         return clients.get(position);
     }
 
