@@ -8,12 +8,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.nuovo_pt.R;
+import com.example.nuovo_pt.db.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterFragment extends Fragment implements View.OnClickListener {
+    private FirebaseAuth mAuth;
     Button registerButton;
     EditText firstName;
     EditText lastName;
@@ -27,6 +36,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.register_tab_fragment, container, false);
 
+        mAuth = FirebaseAuth.getInstance();
         registerEmail = view.findViewById(R.id.email_register);
         registerPassword = view.findViewById(R.id.password_register);
         firstName = view.findViewById(R.id.first_name);
@@ -40,11 +50,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.register_button:
-                registerUser();
-
-        }
+        if(v != null && v == registerButton)
+            registerUser();
     }
     private void registerUser() {
         String email = registerEmail.getText().toString().trim();
@@ -89,6 +96,34 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         }
 
         registerProgressBar.setVisibility(View.VISIBLE);
+        mAuth.createUserWithEmailAndPassword(email,password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()) {
+                            User user = new User(firstNameString,lastNameString,email);
+
+                            FirebaseDatabase.getInstance().getReference("Users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    if(task.isSuccessful()) {
+                                        Toast.makeText(getContext(),"User has been registered succesfully!",Toast.LENGTH_LONG).show();
+                                        registerProgressBar.setVisibility(View.GONE);
+                                    } else {
+                                        Toast.makeText(getContext(),"Failed to register!",Toast.LENGTH_LONG).show();
+                                        registerProgressBar.setVisibility(View.GONE);
+                                    }
+                                }
+                            });
+                        } else {
+                            Toast.makeText(getContext(),"Failed to register the user!",Toast.LENGTH_LONG).show();
+                            registerProgressBar.setVisibility(View.GONE);
+                        }
+                    }
+                });
         
     }
 }

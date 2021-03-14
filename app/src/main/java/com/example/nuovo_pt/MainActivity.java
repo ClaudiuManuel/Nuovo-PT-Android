@@ -1,8 +1,11 @@
 package com.example.nuovo_pt;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.nuovo_pt.api.ExerciseRepository;
 import com.example.nuovo_pt.api.Result;
@@ -12,6 +15,7 @@ import com.example.nuovo_pt.db.clients.Client;
 import com.example.nuovo_pt.ui.AddClientFragment;
 import com.example.nuovo_pt.ui.ClientWorkoutsFragment;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,7 +32,7 @@ import androidx.appcompat.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ClientsAdditionListener {
+public class MainActivity extends AppCompatActivity implements ClientsAdditionListener, View.OnClickListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     ClientsHolder clientsHolder;
@@ -40,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
     ClientViewModel clientViewModel;
     Client clientToBeAdded = null;
     Client previousClient = null;
-    boolean firstTimePopulated = true;
+    Button logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
 
         exercises = new ArrayList<>();
 
+        logout = findViewById(R.id.logout_button);
+        logout.setOnClickListener(this);
+
 
     }
 
@@ -90,5 +97,12 @@ public class MainActivity extends AppCompatActivity implements ClientsAdditionLi
         previousClient = clientToBeAdded;
         clientToBeAdded = client;
     }
-    
+
+    @Override
+    public void onClick(View v) {
+        if (v != null && v == logout) {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+    }
 }

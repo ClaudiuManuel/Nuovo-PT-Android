@@ -1,5 +1,6 @@
 package com.example.nuovo_pt.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,9 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.nuovo_pt.LoginActivity;
 import com.example.nuovo_pt.R;
 import com.example.nuovo_pt.db.ClientViewModel;
 import com.example.nuovo_pt.db.clients.Client;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +51,7 @@ public class HomeStartingPoint extends Fragment implements View.OnClickListener,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_starting_point, container, false);
+
         clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
         clientViewModel.getAllClients().observe(getViewLifecycleOwner(), new Observer<List<Client>>() {
             @Override
@@ -83,13 +87,17 @@ public class HomeStartingPoint extends Fragment implements View.OnClickListener,
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
+
         addClientButton = view.findViewById(R.id.add_client_button);
         addClientButton.setOnClickListener(this);
+
+        /*logout = view.findViewById(R.id.logout_button);
+        logout.setOnClickListener(this);*/
     }
 
     @Override
     public void onClick(View v) {
-        if(v != null && v==addClientButton) {
+        if(v != null && v == addClientButton) {
             navController.navigate(R.id.action_homeStartingPoint_to_nav_add_client);
         }
     }
