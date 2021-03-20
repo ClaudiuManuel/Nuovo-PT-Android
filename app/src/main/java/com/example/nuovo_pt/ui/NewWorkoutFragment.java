@@ -1,6 +1,6 @@
 package com.example.nuovo_pt.ui;
 
-import android.graphics.Color;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -9,29 +9,26 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import com.example.nuovo_pt.R;
 import com.example.nuovo_pt.db.WorkoutViewModel;
-import com.example.nuovo_pt.db.workouts.Workout;
 import com.example.nuovo_pt.db.workouts.WorkoutFirebase;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class NewWorkoutFragment extends Fragment implements View.OnClickListener{
+import java.util.Calendar;
+
+public class NewWorkoutFragment extends Fragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
     String selectedMuscleGroup;
     EditText workoutNameEditText;
     private Button addNewWorkoutButton;
@@ -39,6 +36,8 @@ public class NewWorkoutFragment extends Fragment implements View.OnClickListener
     WorkoutViewModel workoutViewModel;
     String clientName;
     private DatabaseReference databaseReference;
+    EditText dateEditText, levelEditText, workoutLengthEditText;
+    int currentDay,currentMonth,currentYear;
 
     public NewWorkoutFragment() {
 
@@ -57,10 +56,14 @@ public class NewWorkoutFragment extends Fragment implements View.OnClickListener
         databaseReference = FirebaseDatabase.getInstance().getReference("Workouts");
         Spinner spinner = (Spinner) view.findViewById(R.id.muscle_groups_spinner);
         addNewWorkoutButton = view.findViewById(R.id.confirm_workout_addition);
+        levelEditText = view.findViewById(R.id.editTextLevel);
+        workoutLengthEditText = view.findViewById(R.id.editTextWorkoutLength);
+        dateEditText = view.findViewById(R.id.editTextDate);
+        dateEditText.setOnClickListener(this);
         cancelNewWorkoutButton = view.findViewById(R.id.cancel_workout_addition);
         cancelNewWorkoutButton.setOnClickListener(this);
         addNewWorkoutButton.setOnClickListener(this);
-        workoutNameEditText = view.findViewById(R.id.workoutNameEditText);
+        workoutNameEditText = view.findViewById(R.id.editTextWorkoutName);
 
         workoutViewModel = new ViewModelProvider(this).get(WorkoutViewModel.class);
 
@@ -92,10 +95,12 @@ public class NewWorkoutFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         if(v == addNewWorkoutButton) {
             String workoutName = workoutNameEditText.getText().toString();
-            if(workoutName.length() > 0) {
-//                workoutViewModel.insert(new Workout(workoutName, selectedMuscleGroup, clientName));
+            String date = dateEditText.getText().toString();
+            String sets = levelEditText.getText().toString();
+            String reps = workoutLengthEditText.getText().toString();
+            if(workoutName.length() > 0 && date.length() > 0 && sets.length() > 0 && reps.length() > 0) {
                 String workoutID = databaseReference.push().getKey();
-                WorkoutFirebase workoutFirebase = new WorkoutFirebase(workoutID,workoutName,selectedMuscleGroup,clientName);
+                WorkoutFirebase workoutFirebase = new WorkoutFirebase(workoutID,workoutName,sets,reps,date,selectedMuscleGroup,clientName);
                 databaseReference.child(workoutID).setValue(workoutFirebase);
                 workoutNameEditText.setText("");
                 Toast feedback = Toast.makeText(getContext(), "Workout added successfully:  " + workoutName, Toast.LENGTH_LONG);
@@ -104,6 +109,32 @@ public class NewWorkoutFragment extends Fragment implements View.OnClickListener
             }
         } else if(v == cancelNewWorkoutButton) {
             getActivity().onBackPressed();
+        } else if(v == dateEditText) {
+            if(currentDay == 0 || currentMonth == 0 || currentYear == 0) {
+                currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+                currentYear = Calendar.getInstance().get(Calendar.YEAR);
+                currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+            }
+            showDatePicker(currentDay, currentMonth, currentYear);
         }
+    }
+
+    private void showDatePicker(int day, int month, int year) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),this,
+                year,
+                month,
+                day);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        datePickerDialog.show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        view.setMinDate(System.currentTimeMillis() - 1000);
+        String date = dayOfMonth + "-" + (month + 1) + "-" + year;
+        currentDay = dayOfMonth;
+        currentYear = year;
+        currentMonth = month;
+        dateEditText.setText(date);
     }
 }

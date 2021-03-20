@@ -5,13 +5,19 @@ public class WorkoutFirebase {
     String clientsName;
     String workoutName;
     String workoutID;
+    String workoutDate;
+    String workoutSets;
+    String workoutReps;
 
     public WorkoutFirebase(){}
 
-    public WorkoutFirebase(String workoutID, String workoutName, String muscleTargeted, String clientsName) {
+    public WorkoutFirebase(String workoutID, String workoutName,String workoutSets,String workoutReps,String workoutDate, String muscleTargeted, String clientsName) {
         this.muscleTargeted = muscleTargeted;
         this.clientsName = clientsName;
         this.workoutName = workoutName;
+        this.workoutDate = workoutDate;
+        this.workoutSets = workoutSets;
+        this.workoutReps = workoutReps;
         this.workoutID = workoutID;
     }
 
@@ -45,5 +51,29 @@ public class WorkoutFirebase {
 
     public void setWorkoutID(String workoutID) {
         this.workoutID = workoutID;
+    }
+
+    public String getWorkoutDate() {
+        return workoutDate;
+    }
+
+    public void setWorkoutDate(String workoutDate) {
+        this.workoutDate = workoutDate;
+    }
+
+    public String getWorkoutSets() {
+        return workoutSets;
+    }
+
+    public void setWorkoutSets(String workoutSets) {
+        this.workoutSets = workoutSets;
+    }
+
+    public String getWorkoutReps() {
+        return workoutReps;
+    }
+
+    public void setWorkoutReps(String workoutReps) {
+        this.workoutReps = workoutReps;
     }
 }

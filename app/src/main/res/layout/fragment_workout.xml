@@ -35,45 +35,127 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/cancel_workout_addition" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutWorkoutName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="94dp"
-        android:text="Workout name: "
-        android:textColor="@color/primaryTextColor"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toStartOf="@+id/editText"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:context=".ui.NewWorkoutFragment" />
-
-    <EditText
-        android:id="@+id/workoutNameEditText"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:textSize="26sp"
-        android:layout_marginTop="93dp"
-        android:layout_marginEnd="24dp"
-        android:layout_weight=".75"
-        android:background="@drawable/rounded_edittext"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
+        android:hint="Workout Name"
+        android:textColorHint="@color/secondaryColor"
+        app:boxStrokeColor="@color/secondaryColor"
+        app:hintTextColor="@color/secondaryColor"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayoutLevel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextWorkoutName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/secondaryColor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutLevel"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="24dp"
+        android:hint="Level"
+        android:textColorHint="@color/secondaryColor"
+        app:boxStrokeColor="@color/secondaryColor"
+        app:hintTextColor="@color/secondaryColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutWorkoutName">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextLevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/secondaryColor" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutDate"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="24dp"
+        android:hint="Date"
+        android:textColorHint="@color/secondaryColor"
+        app:boxStrokeColor="@color/secondaryColor"
+        app:hintTextColor="@color/secondaryColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutWorkoutLength">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:textColor="@color/primaryTextColor"
+            android:focusableInTouchMode="false"
+            android:longClickable="false"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/secondaryColor" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Spinner
         android:id="@+id/muscle_groups_spinner"
         android:layout_width="match_parent"
-        android:layout_height="66dp"
+        android:layout_height="120dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="49dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDate" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutWorkoutLength"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:hint="Workout length"
+        android:textColorHint="@color/secondaryColor"
+        app:boxStrokeColor="@color/secondaryColor"
+        app:hintTextColor="@color/secondaryColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutLevel">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextWorkoutLength"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberSigned"
+            android:textColorHint="@color/secondaryColor" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
