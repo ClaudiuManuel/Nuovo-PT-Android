@@ -6,18 +6,18 @@ public class WorkoutFirebase {
     String workoutName;
     String workoutID;
     String workoutDate;
-    String workoutSets;
-    String workoutReps;
+    String workoutLength;
+    String workoutLevel;
 
     public WorkoutFirebase(){}
 
-    public WorkoutFirebase(String workoutID, String workoutName,String workoutSets,String workoutReps,String workoutDate, String muscleTargeted, String clientsName) {
+    public WorkoutFirebase(String workoutID, String workoutName, String workoutLength, String workoutLevel, String workoutDate, String muscleTargeted, String clientsName) {
         this.muscleTargeted = muscleTargeted;
         this.clientsName = clientsName;
         this.workoutName = workoutName;
         this.workoutDate = workoutDate;
-        this.workoutSets = workoutSets;
-        this.workoutReps = workoutReps;
+        this.workoutLength = workoutLength;
+        this.workoutLevel = workoutLevel;
         this.workoutID = workoutID;
     }
 
@@ -61,19 +61,19 @@ public class WorkoutFirebase {
         this.workoutDate = workoutDate;
     }
 
-    public String getWorkoutSets() {
-        return workoutSets;
+    public String getWorkoutLength() {
+        return workoutLength;
     }
 
-    public void setWorkoutSets(String workoutSets) {
-        this.workoutSets = workoutSets;
+    public void setWorkoutLength(String workoutLength) {
+        this.workoutLength = workoutLength;
     }
 
-    public String getWorkoutReps() {
-        return workoutReps;
+    public String getWorkoutLevel() {
+        return workoutLevel;
     }
 
-    public void setWorkoutReps(String workoutReps) {
-        this.workoutReps = workoutReps;
+    public void setWorkoutLevel(String workoutLevel) {
+        this.workoutLevel = workoutLevel;
     }
 }

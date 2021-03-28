@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,10 +45,10 @@ public class ClientWorkoutsFragment extends Fragment implements View.OnClickList
     TextView workoutTitle;
     LayoutInflater inflater;
     ViewGroup container;
-    TextView workoutMuscle;
-    List<Workout> workoutList;
+    TextView workoutLength,workoutLevel,workoutDate;
+    String workoutMuscle;
+    ImageView workoutIcon;
     NavController navController = null;
-    WorkoutViewModel workoutViewModel;
     List<WorkoutFirebase> workouts = new ArrayList<>();
     FloatingActionButton fab;
     private DatabaseReference databaseReference;
@@ -81,22 +82,6 @@ public class ClientWorkoutsFragment extends Fragment implements View.OnClickList
 
         this.inflater = inflater;
         this.container = container;
-//
-//        workoutViewModel = new ViewModelProvider(this).get(WorkoutViewModel.class);
-//        workoutViewModel.setClientName(clientName);
-//        workoutViewModel.getAllClientWorkouts().observe(getViewLifecycleOwner(), new Observer<List<Workout>>() {
-//            @Override
-//            public void onChanged(@Nullable final List<Workout> workouts) {
-//                if(firstTimePopulated) {
-//                    workoutList = workouts;
-//                    populateWorkoutsFragment(inflater,container,workouts);
-//                }
-////                else {
-////                    View cardviewWorkout = (View) inflater.inflate(R.layout.cardview_workout, container ,false);
-////                    initialiseWorkoutCardview(cardviewWorkout,workouts.get(workouts.size()-1));
-////                }
-//            }
-//        });
 
         return view;
     }
@@ -134,9 +119,14 @@ public class ClientWorkoutsFragment extends Fragment implements View.OnClickList
 
     void initialiseWorkoutCardview(View cardviewWorkout, WorkoutFirebase workout) {
         workoutTitle = cardviewWorkout.findViewById(R.id.workoutTitle);
-        workoutMuscle = cardviewWorkout.findViewById(R.id.workoutMuscles);
+        workoutLevel = cardviewWorkout.findViewById(R.id.workoutLevelTextView);
+        workoutLength = cardviewWorkout.findViewById(R.id.workoutLengthTextView);
+        workoutDate = cardviewWorkout.findViewById(R.id.workoutDateTextview);
+        workoutIcon = cardviewWorkout.findViewById(R.id.workoutIcon);
         workoutTitle.setText(workout.getWorkoutName());
-        workoutMuscle.setText(workout.getMuscleTargeted());
+        workoutLevel.setText(workout.getWorkoutLevel());
+        workoutLength.setText(workout.getWorkoutLength());
+        workoutDate.setText(workout.getWorkoutDate());
         workoutsLayout.addView(cardviewWorkout);
         cardviewWorkout.setOnClickListener(this);
     }

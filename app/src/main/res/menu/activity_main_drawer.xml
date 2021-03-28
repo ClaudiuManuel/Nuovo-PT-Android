@@ -7,12 +7,16 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/homeStartingPoint"
-            android:icon="@android:drawable/ic_menu_add"
+            android:icon="@drawable/ic_baseline_house_siding_24"
             android:title="Home" />
         <item
             android:id="@+id/aboutUs"
-            android:icon="@android:drawable/ic_menu_add"
-            android:title="About Us" />
+            android:icon="@drawable/ic_baseline_groups_24"
+            android:title="About" />
+        <item
+            android:id="@+id/savedWorkouts"
+            android:icon="@drawable/ic_saved_workouts"
+            android:title="Saved workouts"/>
 
     </group>
 </menu>
