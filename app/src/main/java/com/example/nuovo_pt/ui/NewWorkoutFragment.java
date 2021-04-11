@@ -100,7 +100,7 @@ public class NewWorkoutFragment extends Fragment implements View.OnClickListener
             String estimatedLength = workoutLengthEditText.getText().toString();
             if(workoutName.length() > 0 && date.length() > 0 && level.length() > 0 && estimatedLength.length() > 0) {
                 String workoutID = databaseReference.push().getKey();
-                WorkoutFirebase workoutFirebase = new WorkoutFirebase(workoutID,workoutName,estimatedLength,level,date,selectedMuscleGroup,clientName);
+                WorkoutFirebase workoutFirebase = new WorkoutFirebase(workoutID,workoutName,estimatedLength,level, "false",date,selectedMuscleGroup,clientName);
                 databaseReference.child(workoutID).setValue(workoutFirebase);
                 workoutNameEditText.setText("");
                 Toast feedback = Toast.makeText(getContext(), "Workout added successfully:  " + workoutName, Toast.LENGTH_LONG);

@@ -8,10 +8,11 @@ public class WorkoutFirebase {
     String workoutDate;
     String workoutLength;
     String workoutLevel;
+    String favorite;
 
     public WorkoutFirebase(){}
 
-    public WorkoutFirebase(String workoutID, String workoutName, String workoutLength, String workoutLevel, String workoutDate, String muscleTargeted, String clientsName) {
+    public WorkoutFirebase(String workoutID, String workoutName, String workoutLength, String workoutLevel, String favorite, String workoutDate, String muscleTargeted, String clientsName) {
         this.muscleTargeted = muscleTargeted;
         this.clientsName = clientsName;
         this.workoutName = workoutName;
@@ -19,6 +20,7 @@ public class WorkoutFirebase {
         this.workoutLength = workoutLength;
         this.workoutLevel = workoutLevel;
         this.workoutID = workoutID;
+        this.favorite = favorite;
     }
 
     public String getMuscleTargeted() {
@@ -75,5 +77,13 @@ public class WorkoutFirebase {
 
     public void setWorkoutLevel(String workoutLevel) {
         this.workoutLevel = workoutLevel;
+    }
+
+    public String getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(String favorite) {
+        this.favorite = favorite;
     }
 }

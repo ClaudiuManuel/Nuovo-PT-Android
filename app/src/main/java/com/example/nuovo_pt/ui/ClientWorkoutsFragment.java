@@ -1,10 +1,12 @@
 package com.example.nuovo_pt.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +20,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nuovo_pt.api.ExerciseRepository;
 import com.example.nuovo_pt.api.OnGetAPIResponseCallBack;
@@ -37,53 +42,38 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ClientWorkoutsFragment extends Fragment implements View.OnClickListener {
+public class ClientWorkoutsFragment extends Fragment implements View.OnClickListener, WorkoutRecyclerViewAdapter.ItemClickListener {
     String clientName;
-    LinearLayout workoutsLayout;
-    TextView workoutTitle;
-    LayoutInflater inflater;
-    ViewGroup container;
-    TextView workoutLength,workoutLevel,workoutDate;
-    String workoutMuscle;
-    ImageView workoutIcon;
     NavController navController = null;
     List<WorkoutFirebase> workouts = new ArrayList<>();
     FloatingActionButton fab;
     private DatabaseReference databaseReference;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        clientName = getArguments().getString("clientName");
-    }
+    WorkoutRecyclerViewAdapter adapter;
+    RecyclerView recyclerView;
 
     public ClientWorkoutsFragment() {
 
     }
 
+    // Declare Context variable at class level in Fragment
+    private Context mContext;
+
+    // Initialise it from onAttach()
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
-        workoutsLayout = view.findViewById(R.id.workouts_layout);
-        fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(this);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_client_workouts, container, false);
-        databaseReference = FirebaseDatabase.getInstance().getReference("Workouts");
-
-        this.inflater = inflater;
-        this.container = container;
-
-        return view;
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        clientName = getArguments().getString("clientName");
     }
 
     @Override
@@ -110,25 +100,33 @@ public class ClientWorkoutsFragment extends Fragment implements View.OnClickList
         });
     }
 
-    void populateWorkoutsFragment(List<WorkoutFirebase> workouts) {
-        for(WorkoutFirebase workout:workouts) {
-            View cardviewWorkout = (View) inflater.inflate(R.layout.cardview_workout, container ,false);
-            initialiseWorkoutCardview(cardviewWorkout,workout);
-        }
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_client_workouts, container, false);
+        databaseReference = FirebaseDatabase.getInstance().getReference("Workouts");
+
+        recyclerView = view.findViewById(R.id.workoutsRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        return view;
     }
 
-    void initialiseWorkoutCardview(View cardviewWorkout, WorkoutFirebase workout) {
-        workoutTitle = cardviewWorkout.findViewById(R.id.workoutTitle);
-        workoutLevel = cardviewWorkout.findViewById(R.id.workoutLevelTextView);
-        workoutLength = cardviewWorkout.findViewById(R.id.workoutLengthTextView);
-        workoutDate = cardviewWorkout.findViewById(R.id.workoutDateTextview);
-        workoutIcon = cardviewWorkout.findViewById(R.id.workoutIcon);
-        workoutTitle.setText(workout.getWorkoutName());
-        workoutLevel.setText(workout.getWorkoutLevel());
-        workoutLength.setText(workout.getWorkoutLength());
-        workoutDate.setText(workout.getWorkoutDate());
-        workoutsLayout.addView(cardviewWorkout);
-        cardviewWorkout.setOnClickListener(this);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+
+        fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+    }
+
+    void populateWorkoutsFragment(List<WorkoutFirebase> workouts) {
+        adapter = new WorkoutRecyclerViewAdapter(mContext, workouts);
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -137,21 +135,13 @@ public class ClientWorkoutsFragment extends Fragment implements View.OnClickList
             Bundle bundle = new Bundle();
             bundle.putString("clientName",clientName);
             navController.navigate(R.id.action_clientWorkoutsFragment_to_newWorkoutFragment2,bundle);
-        } else {
-            TextView workoutTitleTextView = v.findViewById(R.id.workoutCardView).findViewById(R.id.workoutTitle);
-            String workoutTitle = workoutTitleTextView.getText().toString();
-            String workoutID = searchWorkouts(workouts,workoutTitle);
-            Bundle bundle = new Bundle();
-            bundle.putString("workoutID",workoutID);
-            navController.navigate(R.id.action_clientWorkoutsFragment_to_workoutExercisesFragment2,bundle);
         }
     }
 
-    public String searchWorkouts(List<WorkoutFirebase> workouts, String workoutTitle) {
-        for(WorkoutFirebase workout:workouts) {
-            if(workout.getWorkoutName().equals(workoutTitle))
-                return workout.getWorkoutID();
-        }
-        return null;
+    @Override
+    public void onItemClick(View view, int position) {
+        Bundle bundle = new Bundle();
+        bundle.putString("workoutID",adapter.getWorkout(position).getWorkoutID());
+        navController.navigate(R.id.action_clientWorkoutsFragment_to_workoutExercisesFragment2,bundle);
     }
 }

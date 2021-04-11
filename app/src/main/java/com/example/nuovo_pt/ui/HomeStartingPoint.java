@@ -34,8 +34,6 @@ public class HomeStartingPoint extends Fragment implements View.OnClickListener,
     Button addClientButton;
     RecyclerView recyclerView;
     ClientRecyclerViewAdapter adapter;
-    ClientViewModel clientViewModel;
-    boolean firstTimePopulated = true;
     private DatabaseReference databaseReference;
     List<ClientFirebase> clientList = new ArrayList<>();
 
@@ -88,12 +86,6 @@ public class HomeStartingPoint extends Fragment implements View.OnClickListener,
         return view;
     }
 
-    public void populateClientCardviews(List<ClientFirebase> clients) {
-        adapter = new ClientRecyclerViewAdapter(this.getContext(),clients);
-        adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -104,6 +96,12 @@ public class HomeStartingPoint extends Fragment implements View.OnClickListener,
 
         /*logout = view.findViewById(R.id.logout_button);
         logout.setOnClickListener(this);*/
+    }
+
+    public void populateClientCardviews(List<ClientFirebase> clients) {
+        adapter = new ClientRecyclerViewAdapter(this.getContext(),clients);
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override

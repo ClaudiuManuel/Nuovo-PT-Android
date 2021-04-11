@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="370dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
     android:id="@+id/workoutCardView"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:clickable="true"
     app:cardElevation="14dp"
     app:cardBackgroundColor="@color/primaryTextColor"
     android:foreground="?android:attr/selectableItemBackground"
     android:focusable="true"
-    android:layout_marginBottom="16dp"
-    android:layout_marginTop="16dp"
+    android:layout_marginBottom="24dp"
     app:cardCornerRadius="8dp">
 
     <LinearLayout
@@ -130,7 +125,6 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:orientation="horizontal"
-                android:layout_weight="1"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -139,6 +133,13 @@
                     android:text="24-02-2021"
                     android:textColor="#6A90B5"
                     android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/addToFavoritesButton"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="48dp"
+                    android:background="@drawable/favorite_workout_border" />
 
             </LinearLayout>
         </LinearLayout>
