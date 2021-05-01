@@ -39,7 +39,15 @@
         android:id="@+id/savedWorkouts"
         android:name="com.example.nuovo_pt.ui.SavedWorkouts"
         android:label="Saved workouts"
-        tools:layout="@layout/fragment_saved_workouts" />
+        tools:layout="@layout/fragment_saved_workouts" >
+        <action
+            android:id="@+id/action_savedWorkouts_to_workoutExercisesFragment2"
+            app:destination="@id/workoutExercisesFragment2"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+    </fragment>
     <fragment
         android:id="@+id/clientWorkoutsFragment"
         android:name="com.example.nuovo_pt.ui.ClientWorkoutsFragment"
@@ -101,5 +109,10 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"/>
     </fragment>
+    <fragment
+        android:id="@+id/calendar"
+        android:name="com.example.nuovo_pt.ui.Calendar"
+        android:label=""
+        tools:layout="@layout/fragment_calendar" />
 
 </navigation>

@@ -9,6 +9,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Database;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,8 @@ import com.example.nuovo_pt.R;
 import com.example.nuovo_pt.db.ClientViewModel;
 import com.example.nuovo_pt.db.clients.Client;
 import com.example.nuovo_pt.db.clients.ClientFirebase;
+import com.example.nuovo_pt.db.workouts.WorkoutFirebase;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +38,7 @@ public class HomeStartingPoint extends Fragment implements View.OnClickListener,
     RecyclerView recyclerView;
     ClientRecyclerViewAdapter adapter;
     private DatabaseReference databaseReference;
+    private DatabaseReference databaseReferenceWorkouts;
     List<ClientFirebase> clientList = new ArrayList<>();
 
     public HomeStartingPoint() {
@@ -68,6 +72,42 @@ public class HomeStartingPoint extends Fragment implements View.OnClickListener,
 
             }
         });
+
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                String removedClient = dataSnapshot.getValue(ClientFirebase.class).getName();
+                databaseReferenceWorkouts.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot1) {
+                        for(DataSnapshot workoutSnapshot : dataSnapshot1.getChildren()) {
+                            WorkoutFirebase workoutFirebase = workoutSnapshot.getValue(WorkoutFirebase.class);
+                            if(workoutFirebase.getClientsName().equals(removedClient) )
+                                databaseReferenceWorkouts.child(workoutFirebase.getWorkoutID()).removeValue();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // ...
+                    }
+                });
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
     @Override
@@ -77,6 +117,7 @@ public class HomeStartingPoint extends Fragment implements View.OnClickListener,
         View view = inflater.inflate(R.layout.fragment_home_starting_point, container, false);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Clients");
+        databaseReferenceWorkouts = FirebaseDatabase.getInstance().getReference("Workouts");
 
         recyclerView = view.findViewById(R.id.clients_recyclerview);
         recyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
@@ -94,8 +135,6 @@ public class HomeStartingPoint extends Fragment implements View.OnClickListener,
         addClientButton = view.findViewById(R.id.add_client_button);
         addClientButton.setOnClickListener(this);
 
-        /*logout = view.findViewById(R.id.logout_button);
-        logout.setOnClickListener(this);*/
     }
 
     public void populateClientCardviews(List<ClientFirebase> clients) {

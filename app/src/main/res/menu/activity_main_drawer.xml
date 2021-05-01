@@ -17,6 +17,11 @@
             android:id="@+id/savedWorkouts"
             android:icon="@drawable/ic_saved_workouts"
             android:title="Saved workouts"/>
+        <item
+            android:id="@+id/calendar"
+            android:icon="@drawable/ic_baseline_groups_24"
+            android:title="Calendar"
+            />
 
     </group>
 </menu>

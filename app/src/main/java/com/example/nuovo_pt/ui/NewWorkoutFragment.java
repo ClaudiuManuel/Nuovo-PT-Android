@@ -131,10 +131,64 @@ public class NewWorkoutFragment extends Fragment implements View.OnClickListener
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         view.setMinDate(System.currentTimeMillis() - 1000);
-        String date = dayOfMonth + "-" + (month + 1) + "-" + year;
+
         currentDay = dayOfMonth;
         currentYear = year;
         currentMonth = month;
-        dateEditText.setText(date);
+
+        dateEditText.setText(getFormatedDate(year, month+1, dayOfMonth));
+    }
+
+    private String getFormatedDate(int year, int month, int dayOfMonth) {
+        String monthString,dayString,yearString;
+        yearString = year+"";
+
+        if(dayOfMonth < 10) {
+            dayString = "0" + dayOfMonth;
+        } else
+            dayString = dayOfMonth + "";
+
+        switch(month) {
+            case 1:
+                monthString = "Jan";
+                break;
+            case 2:
+                monthString = "Feb";
+                break;
+            case 3:
+                monthString = "Mar";
+                break;
+            case 4:
+                monthString = "Apr";
+                break;
+            case 5:
+                monthString = "May";
+                break;
+            case 6:
+                monthString = "Jun";
+                break;
+            case 7:
+                monthString = "Jul";
+                break;
+            case 8:
+                monthString = "Aug";
+                break;
+            case 9:
+                monthString = "Sep";
+                break;
+            case 10:
+                monthString = "Oct";
+                break;
+            case 11:
+                monthString = "Nov";
+                break;
+            case 12:
+                monthString = "Dec";
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + month);
+        }
+
+        return monthString + " " + dayString + " " + yearString;
     }
 }

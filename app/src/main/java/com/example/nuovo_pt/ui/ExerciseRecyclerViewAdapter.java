@@ -12,44 +12,41 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nuovo_pt.OnItemClickListener;
 import com.example.nuovo_pt.R;
-import com.example.nuovo_pt.db.clients.Client;
 import com.example.nuovo_pt.db.clients.ClientFirebase;
-import com.example.nuovo_pt.db.exercises.Exercise;
+import com.example.nuovo_pt.db.exercises.ExerciseFirebase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
-public class ClientRecyclerViewAdapter extends RecyclerView.Adapter<ClientRecyclerViewAdapter.ClientViewHolder> {
+public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRecyclerViewAdapter.ExerciseViewHolder>{
 
     private ItemClickListener mClickListener;
 
-    class ClientViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private final TextView clientNameTextview;
-        private final ImageView clientIcon;
+    class ExerciseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        private final TextView exerciseTitle,exerciseMuscle;
         private DatabaseReference databaseReference;
 
-        public ClientViewHolder(View itemView) {
+        public ExerciseViewHolder(View itemView) {
             super(itemView);
-            databaseReference = FirebaseDatabase.getInstance().getReference("Clients");
+            databaseReference = FirebaseDatabase.getInstance().getReference("Exercises");
 
-            clientNameTextview = itemView.findViewById(R.id.male_cardview_text);
-            clientIcon = itemView.findViewById(R.id.client_cardview_icon);
+            exerciseTitle = itemView.findViewById(R.id.exercise_title);
+            exerciseMuscle = itemView.findViewById(R.id.exercise_muscle);
             itemView.setOnClickListener(this);
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    ClientFirebase client = clients.get(getAdapterPosition());
+                    ExerciseFirebase exerciseFirebase = exercises.get(getAdapterPosition());
                     new AlertDialog.Builder(context)
-                            .setTitle("Client removal")
-                            .setMessage("Are you sure you want to remove this client?")
+                            .setTitle("Exercise removal")
+                            .setMessage("Are you sure you want to remove this exercise?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    databaseReference.child(client.getName()).removeValue();
+                                    databaseReference.child(exerciseFirebase.getExerciseID()).removeValue();
                                 }
                             }).setNegativeButton("No", null).show();
                     return true;
@@ -64,47 +61,46 @@ public class ClientRecyclerViewAdapter extends RecyclerView.Adapter<ClientRecycl
 
     }
 
-    private List<ClientFirebase> clients;
+    private List<ExerciseFirebase> exercises;
     private LayoutInflater mInflater;
     private Context context;
 
-    ClientRecyclerViewAdapter(Context context,List<ClientFirebase> clients) {
-        this.clients = clients;
+    ExerciseRecyclerViewAdapter(Context context,List<ExerciseFirebase> exercises) {
+        this.exercises = exercises;
         this.context = context;
         mInflater = LayoutInflater.from(context);
     }
 
     @Override
     @NonNull
-    public ClientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.male_client_cardview, parent, false);
-        return new ClientViewHolder(view);
+        return new ExerciseViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ClientViewHolder holder, int position) {
-        holder.clientNameTextview.setText(clients.get(position).getName());
-        if(clients.get(position).getIsMale() == false)
-            holder.clientIcon.setImageResource(R.drawable.female);
+    public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
+        holder.exerciseTitle.setText(exercises.get(position).getExerciseName());
+        holder.exerciseMuscle.setText(exercises.get(position).getMuscleTargeted());
     }
 
     @Override
     public int getItemCount() {
-        if (clients != null)
-            return clients.size();
+        if (exercises != null)
+            return exercises.size();
         else return 0;
     }
 
-    public void setClients(List<ClientFirebase> clients) {
-        this.clients = clients;
+    public void setExercises(List<ExerciseFirebase> exercises) {
+        this.exercises = exercises;
     }
 
     void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 
-    ClientFirebase getClient(int position) {
-        return clients.get(position);
+    ExerciseFirebase getExercise(int position) {
+        return exercises.get(position);
     }
 
     public interface ItemClickListener {

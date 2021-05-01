@@ -95,8 +95,6 @@ public class ChooseExerciseFragment extends Fragment {
         adapter = new ExerciseAdapter(this.getContext(),exercises,new OnItemClickListener() {
             @Override
             public void onItemClick(Exercise exercise) {
-//                Exercise exerciseToBeAdded = new Exercise(exercise.getExerciseName(),exercise.getTargetedMuscle(),workoutID);
-//                exerciseViewModel.insert(exerciseToBeAdded);
                 String exerciseID = databaseReference.push().getKey();
                 ExerciseFirebase exerciseFirebase = new ExerciseFirebase(workoutID,exerciseID,exercise.getTargetedMuscle(),exercise.getExerciseName());
                 databaseReference.child(exerciseID).setValue(exerciseFirebase);

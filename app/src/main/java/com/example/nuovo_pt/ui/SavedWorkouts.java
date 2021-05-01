@@ -110,6 +110,6 @@ public class SavedWorkouts extends Fragment implements WorkoutRecyclerViewAdapte
     public void onItemClick(View view, int position) {
         Bundle bundle = new Bundle();
         bundle.putString("workoutID",adapter.getWorkout(position).getWorkoutID());
-        navController.navigate(R.id.action_clientWorkoutsFragment_to_workoutExercisesFragment2,bundle);
+        navController.navigate(R.id.action_savedWorkouts_to_workoutExercisesFragment2,bundle);
     }
 }

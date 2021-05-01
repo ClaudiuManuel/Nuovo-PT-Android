@@ -1,12 +1,15 @@
 package com.example.nuovo_pt.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,7 +28,7 @@ public class WorkoutRecyclerViewAdapter extends RecyclerView.Adapter<WorkoutRecy
 
     class WorkoutViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView workoutTitle,workoutLength,workoutLevel,workoutDate;
-        Button addToFavorites;
+        Button addToFavorites,deleteWorkout;
         ImageView workoutIcon;
         private DatabaseReference databaseReference;
 
@@ -39,6 +42,7 @@ public class WorkoutRecyclerViewAdapter extends RecyclerView.Adapter<WorkoutRecy
             workoutDate = itemView.findViewById(R.id.workoutDateTextview);
             workoutIcon = itemView.findViewById(R.id.workoutIcon);
             addToFavorites = itemView.findViewById(R.id.addToFavoritesButton);
+            deleteWorkout = itemView.findViewById(R.id.deleteWorkoutButton);
             itemView.setOnClickListener(this);
 
             addToFavorites.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +60,23 @@ public class WorkoutRecyclerViewAdapter extends RecyclerView.Adapter<WorkoutRecy
                     }
                 }
             });
+
+            deleteWorkout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    WorkoutFirebase workoutFirebase = workouts.get(position);
+                    new AlertDialog.Builder(context)
+                            .setTitle("Workout removal")
+                            .setMessage("Are you sure you want to remove this workout?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    databaseReference.child(workoutFirebase.getWorkoutID()).removeValue();
+                                }
+                            }).setNegativeButton("No", null).show();
+                }
+            });
         }
 
         @Override
@@ -66,10 +87,12 @@ public class WorkoutRecyclerViewAdapter extends RecyclerView.Adapter<WorkoutRecy
 
     private List<WorkoutFirebase> workouts;
     private LayoutInflater mInflater;
+    private Context context;
 
     WorkoutRecyclerViewAdapter(Context context, List<WorkoutFirebase> workouts) {
         this.workouts = workouts;
         mInflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
     @Override
@@ -88,6 +111,29 @@ public class WorkoutRecyclerViewAdapter extends RecyclerView.Adapter<WorkoutRecy
 
         if(workouts.get(position).getFavorite().equals("true")) {
             holder.addToFavorites.setBackgroundResource(R.drawable.favorite_workout_filled);
+        }
+
+        String workoutMuscle = workouts.get(position).getMuscleTargeted();
+
+        switch (workoutMuscle) {
+            case "Back":
+                holder.workoutIcon.setImageResource(R.drawable.back_primary_color);
+                break;
+            case "Legs":
+                holder.workoutIcon.setImageResource(R.drawable.legs_primary_color);
+                break;
+            case "Arms":
+                holder.workoutIcon.setImageResource(R.drawable.arms_primary_color);
+                break;
+            case "Abs":
+                holder.workoutIcon.setImageResource(R.drawable.abs_primary_color);
+                break;
+            case "Shoulders":
+                holder.workoutIcon.setImageResource(R.drawable.shoulders_primary_color);
+                break;
+            case "Calves":
+                holder.workoutIcon.setImageResource(R.drawable.calves_first_option);
+                break;
         }
     }
 
