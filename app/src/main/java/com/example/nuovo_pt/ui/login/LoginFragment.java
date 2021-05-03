@@ -125,14 +125,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 //                        user.sendEmailVerification();
 //                        Toast.makeText(getContext(), "Check your email to verify your account", Toast.LENGTH_SHORT).show();
 //                    }
-
-                    startActivity(new Intent(getActivity(), MainActivity.class));
                     progressBar.setVisibility(View.GONE);
+                    startActivity(new Intent(getActivity(), MainActivity.class));
+
                 } else {
                     Toast.makeText(getContext(),"Failed to login!", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);
                 }
             }
         });
+
     }
 }

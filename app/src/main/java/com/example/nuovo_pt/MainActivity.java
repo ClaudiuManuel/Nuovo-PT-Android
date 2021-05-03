@@ -16,6 +16,7 @@ import com.example.nuovo_pt.ui.AddClientFragment;
 import com.example.nuovo_pt.ui.ClientWorkoutsFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,13 +43,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     DrawerLayout drawer;
     List<Result> exercises;
     ClientViewModel clientViewModel;
-    Client clientToBeAdded = null;
-    Client previousClient = null;
     Button logout;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,6 +77,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         logout.setOnClickListener(this);
 
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser == null){
+            startActivity(new Intent(this, LoginActivity.class));
+        }
     }
 
     @Override
