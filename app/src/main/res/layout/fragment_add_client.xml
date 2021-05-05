@@ -57,6 +57,7 @@
             android:id="@+id/editTextPersonName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/primaryTextColor"
             android:ems="10"
             android:inputType="textPersonName"
             android:textColorHint="@color/secondaryColor" />
@@ -86,6 +87,7 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:textColorHint="@color/secondaryColor"
+            android:textColor="@color/primaryTextColor"
             tools:layout_editor_absoluteX="20dp"
             tools:layout_editor_absoluteY="447dp" />
 

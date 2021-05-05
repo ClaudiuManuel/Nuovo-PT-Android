@@ -1,34 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="370dp"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/exercise_item"
+    android:layout_width="match_parent"
     android:layout_gravity="center_horizontal"
     android:layout_height="wrap_content"
+    android:clickable="true"
+    app:cardElevation="14dp"
+    app:cardCornerRadius="26dp"
     android:layout_marginBottom="15dp"
     >
 
-        <TextView
-            android:id="@+id/exercise_title"
-            android:layout_gravity="center_horizontal"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:text="Exercise name \n "
-            android:paddingLeft="5dp"
-            android:textColor="@color/secondaryColor"
-            android:background="#0505C8" />
+            android:layout_height="match_parent"
+            android:background="@drawable/exercise_background"
+            android:gravity="center"
+            android:orientation="vertical">
+                <TextView
+                    android:id="@+id/exercise_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:text="Exercise name \n "
+                    android:paddingTop="5dp"
+                    android:textColor="@color/primaryColor"
+                     />
 
-        <TextView
-            android:id="@+id/exercise_muscle"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="italic"
-            android:paddingTop="5dp"
-            android:paddingLeft="5dp"
-            android:textSize="18sp"
-            android:text="Exercise name \n "
-            android:textColor="@color/secondaryLightColor"
-            android:background="#0505C8" />
+                <TextView
+                    android:id="@+id/exercise_muscle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textStyle="italic"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="5dp"
+                    android:textSize="18sp"
+                    android:text="Exercise name \n "
+                    android:textColor="@color/secondaryTextColor"
+                     />
+        </LinearLayout>
 
-</LinearLayout>
+
+</androidx.cardview.widget.CardView>

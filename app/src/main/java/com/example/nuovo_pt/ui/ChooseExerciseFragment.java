@@ -71,8 +71,10 @@ public class ChooseExerciseFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 WorkoutFirebase workoutFirebase = snapshot.getValue(WorkoutFirebase.class);
-                workoutMuscle = workoutFirebase.getMuscleTargeted();
-                getExercisesFromAPI();
+                if(workoutFirebase != null) {
+                    workoutMuscle = workoutFirebase.getMuscleTargeted();
+                    getExercisesFromAPI();
+                }
             }
 
             @Override

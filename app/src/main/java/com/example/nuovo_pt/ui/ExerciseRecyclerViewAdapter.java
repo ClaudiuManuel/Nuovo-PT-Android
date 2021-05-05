@@ -25,7 +25,7 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
     private ItemClickListener mClickListener;
 
     class ExerciseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private final TextView exerciseTitle,exerciseMuscle;
+        private TextView exerciseTitle,exerciseMuscle;
         private DatabaseReference databaseReference;
 
         public ExerciseViewHolder(View itemView) {
@@ -74,7 +74,7 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
     @Override
     @NonNull
     public ExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.male_client_cardview, parent, false);
+        View view = mInflater.inflate(R.layout.exercise_item, parent, false);
         return new ExerciseViewHolder(view);
     }
 

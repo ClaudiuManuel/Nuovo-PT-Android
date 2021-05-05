@@ -1,5 +1,6 @@
 package com.example.nuovo_pt.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nuovo_pt.R;
 import com.example.nuovo_pt.api.ExerciseRepository;
@@ -38,11 +41,6 @@ import java.util.List;
 
 public class WorkoutExercisesFragment extends Fragment implements View.OnClickListener{
     String workoutID;
-    LinearLayout exercisesLayout;
-    ExerciseViewModel exerciseViewModel;
-    boolean firstTimePopulated = true;
-    TextView exerciseTitle;
-    TextView exerciseMuscle;
     FloatingActionButton fab;
     LayoutInflater inflater;
     ViewGroup container;
@@ -50,8 +48,20 @@ public class WorkoutExercisesFragment extends Fragment implements View.OnClickLi
     DatabaseReference databaseReference;
     List<ExerciseFirebase> exercises = new ArrayList<>();
 
+    RecyclerView recyclerView;
+    ExerciseRecyclerViewAdapter adapter;
+
     public WorkoutExercisesFragment() {
 
+    }
+
+    private Context mContext;
+
+    // Initialise it from onAttach()
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
     @Override
@@ -74,10 +84,10 @@ public class WorkoutExercisesFragment extends Fragment implements View.OnClickLi
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_workouts_exercises, container, false);
-        exercisesLayout = view.findViewById(R.id.exercises_layout);
         databaseReference = FirebaseDatabase.getInstance().getReference("Exercises");
-        this.inflater = inflater;
-        this.container = container;
+
+        recyclerView = view.findViewById(R.id.exercisesRecyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         return view;
     }
@@ -107,18 +117,8 @@ public class WorkoutExercisesFragment extends Fragment implements View.OnClickLi
     }
 
     void populateExercises(List<ExerciseFirebase> exercises) {
-        for(ExerciseFirebase exercise:exercises) {
-            View exerciseItem = (View) inflater.inflate(R.layout.exercise_item, container ,false);
-            initialiseExerciseItem(exerciseItem,exercise);
-        }
-    }
-
-    void initialiseExerciseItem(View exerciseItem, ExerciseFirebase exercise) {
-        exerciseTitle = exerciseItem.findViewById(R.id.exercise_title);
-        exerciseMuscle = exerciseItem.findViewById(R.id.exercise_muscle);
-        exerciseTitle.setText(exercise.getExerciseName());
-        exerciseMuscle.setText(exercise.getMuscleTargeted());
-        exercisesLayout.addView(exerciseItem);
+        adapter = new ExerciseRecyclerViewAdapter(mContext, exercises);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override

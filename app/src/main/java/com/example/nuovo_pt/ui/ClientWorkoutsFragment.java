@@ -1,6 +1,8 @@
 package com.example.nuovo_pt.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -132,9 +134,27 @@ public class ClientWorkoutsFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         if(v != null && v==fab) {
-            Bundle bundle = new Bundle();
-            bundle.putString("clientName",clientName);
-            navController.navigate(R.id.action_clientWorkoutsFragment_to_newWorkoutFragment2,bundle);
+            final String[] options = {
+                    "Add from saved workouts", "Create new workout"
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Select workout building method");
+            builder.setItems(options, new DialogInterface.OnClickListener() {@
+                    Override
+            public void onClick(DialogInterface dialog, int which) {
+                if ("Add from saved workouts".equals(options[which])) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("clientName",clientName);
+                    navController.navigate(R.id.action_clientWorkoutsFragment_to_savedWorkouts,bundle);
+                } else if ("Create new workout".equals(options[which])) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("clientName",clientName);
+                    navController.navigate(R.id.action_clientWorkoutsFragment_to_newWorkoutFragment2,bundle);
+                }
+            }
+            });
+            builder.show();
         }
     }
 
