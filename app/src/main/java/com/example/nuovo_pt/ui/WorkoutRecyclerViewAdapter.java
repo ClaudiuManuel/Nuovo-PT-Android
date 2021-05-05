@@ -25,8 +25,9 @@ import java.util.List;
 public class WorkoutRecyclerViewAdapter extends RecyclerView.Adapter<WorkoutRecyclerViewAdapter.WorkoutViewHolder> {
 
     private ItemClickListener mClickListener;
+    private LongItemClickListener longItemClickListener;
 
-    class WorkoutViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class WorkoutViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener{
         TextView workoutTitle,workoutLength,workoutLevel,workoutDate;
         Button addToFavorites,deleteWorkout;
         ImageView workoutIcon;
@@ -77,11 +78,26 @@ public class WorkoutRecyclerViewAdapter extends RecyclerView.Adapter<WorkoutRecy
                             }).setNegativeButton("No", null).show();
                 }
             });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    WorkoutFirebase workoutToBeEdited = workouts.get(getAdapterPosition());
+
+                    return true;
+                }
+            });
         }
 
         @Override
         public void onClick(View v) {
             if (mClickListener != null) mClickListener.onItemClick(v, getAdapterPosition());
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if (longItemClickListener != null) longItemClickListener.onLongItemClick(v, getAdapterPosition());
+            return true;
         }
     }
 
@@ -158,5 +174,9 @@ public class WorkoutRecyclerViewAdapter extends RecyclerView.Adapter<WorkoutRecy
 
     public interface ItemClickListener {
         void onItemClick(View view, int position);
+    }
+
+    public interface LongItemClickListener {
+        void onLongItemClick(View view, int position);
     }
 }

@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
@@ -48,7 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ClientWorkoutsFragment extends Fragment implements View.OnClickListener, WorkoutRecyclerViewAdapter.ItemClickListener {
+public class ClientWorkoutsFragment extends Fragment implements View.OnClickListener, WorkoutRecyclerViewAdapter.ItemClickListener, WorkoutRecyclerViewAdapter.LongItemClickListener {
     String clientName;
     NavController navController = null;
     List<WorkoutFirebase> workouts = new ArrayList<>();
@@ -81,6 +82,7 @@ public class ClientWorkoutsFragment extends Fragment implements View.OnClickList
     @Override
     public void onStart() {
         super.onStart();
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(clientName);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -163,5 +165,12 @@ public class ClientWorkoutsFragment extends Fragment implements View.OnClickList
         Bundle bundle = new Bundle();
         bundle.putString("workoutID",adapter.getWorkout(position).getWorkoutID());
         navController.navigate(R.id.action_clientWorkoutsFragment_to_workoutExercisesFragment2,bundle);
+    }
+
+    @Override
+    public void onLongItemClick(View view, int position) {
+        Bundle bundle = new Bundle();
+        bundle.putString("clientName",clientName);
+        navController.navigate(R.id.action_clientWorkoutsFragment_to_newWorkoutFragment2,bundle);
     }
 }

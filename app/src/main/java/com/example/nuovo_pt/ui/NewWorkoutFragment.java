@@ -102,10 +102,10 @@ public class NewWorkoutFragment extends Fragment implements View.OnClickListener
                 String workoutID = databaseReference.push().getKey();
                 WorkoutFirebase workoutFirebase = new WorkoutFirebase(workoutID,workoutName,estimatedLength,level, "false",date,selectedMuscleGroup,clientName);
                 databaseReference.child(workoutID).setValue(workoutFirebase);
-                workoutNameEditText.setText("");
                 Toast feedback = Toast.makeText(getContext(), "Workout added successfully:  " + workoutName, Toast.LENGTH_LONG);
                 feedback.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 230);
                 feedback.show();
+                getActivity().onBackPressed();
             }
         } else if(v == cancelNewWorkoutButton) {
             getActivity().onBackPressed();

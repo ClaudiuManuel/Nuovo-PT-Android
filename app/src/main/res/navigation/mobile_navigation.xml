@@ -86,7 +86,7 @@
     <fragment
         android:id="@+id/chooseExerciseFragment"
         android:name="com.example.nuovo_pt.ui.ChooseExerciseFragment"
-        android:label="fragment_add_exercise"
+        android:label="Add new exercises"
         tools:layout="@layout/fragment_add_exercise">
         <argument
         android:name="workoutID"
@@ -96,7 +96,7 @@
     <fragment
         android:id="@+id/newWorkoutFragment2"
         android:name="com.example.nuovo_pt.ui.NewWorkoutFragment"
-        android:label="fragment_workout"
+        android:label="Add new workout"
         tools:layout="@layout/fragment_workout">
         <argument
             android:name="clientName"
@@ -106,7 +106,7 @@
     <fragment
         android:id="@+id/workoutExercisesFragment2"
         android:name="com.example.nuovo_pt.ui.WorkoutExercisesFragment"
-        android:label="fragment_workouts_exercises"
+        android:label="Workout Exercises"
         tools:layout="@layout/fragment_workouts_exercises" >
         <argument
             android:name="workoutID"

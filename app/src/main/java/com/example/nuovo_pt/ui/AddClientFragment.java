@@ -68,10 +68,10 @@ public class AddClientFragment extends Fragment implements View.OnClickListener 
                     ClientFirebase clientFirebase = new ClientFirebase(clientName,false);
                     databaseReference.child(clientName).setValue(clientFirebase);
                 }
-                    clientNameEditText.setText("");
                 Toast feedback = Toast.makeText(getContext(), "Client added successfully:  " + clientName, Toast.LENGTH_LONG);
                 feedback.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 230);
                 feedback.show();
+                getActivity().onBackPressed();
             }
         } else if(v == cancelNewClientButton) {
             getActivity().onBackPressed();

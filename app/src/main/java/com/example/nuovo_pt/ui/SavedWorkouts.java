@@ -155,6 +155,7 @@ public class SavedWorkouts extends Fragment implements WorkoutRecyclerViewAdapte
             Toast feedback = Toast.makeText(getContext(), "Workout added successfully:  " + workoutName, Toast.LENGTH_LONG);
             feedback.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 230);
             feedback.show();
+            getActivity().onBackPressed();
         }
     }
 }
