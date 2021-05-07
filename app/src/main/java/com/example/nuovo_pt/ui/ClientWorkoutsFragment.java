@@ -130,6 +130,7 @@ public class ClientWorkoutsFragment extends Fragment implements View.OnClickList
     void populateWorkoutsFragment(List<WorkoutFirebase> workouts) {
         adapter = new WorkoutRecyclerViewAdapter(mContext, workouts);
         adapter.setClickListener(this);
+        adapter.setLongClickListener(this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -169,8 +170,16 @@ public class ClientWorkoutsFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onLongItemClick(View view, int position) {
+        WorkoutFirebase workoutFirebase = adapter.getWorkout(position);
+
         Bundle bundle = new Bundle();
         bundle.putString("clientName",clientName);
-        navController.navigate(R.id.action_clientWorkoutsFragment_to_newWorkoutFragment2,bundle);
+        bundle.putString("muscleTargeted",workoutFirebase.getMuscleTargeted());
+        bundle.putString("workoutDate",workoutFirebase.getWorkoutDate());
+        bundle.putString("workoutLength",workoutFirebase.getWorkoutLength());
+        bundle.putString("workoutLevel",workoutFirebase.getWorkoutLevel());
+        bundle.putString("workoutName",workoutFirebase.getWorkoutName());
+        bundle.putString("workoutID",workoutFirebase.getWorkoutID());
+        navController.navigate(R.id.action_clientWorkoutsFragment_to_updateWorkout,bundle);
     }
 }

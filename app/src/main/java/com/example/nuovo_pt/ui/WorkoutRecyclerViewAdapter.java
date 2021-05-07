@@ -45,6 +45,7 @@ public class WorkoutRecyclerViewAdapter extends RecyclerView.Adapter<WorkoutRecy
             addToFavorites = itemView.findViewById(R.id.addToFavoritesButton);
             deleteWorkout = itemView.findViewById(R.id.deleteWorkoutButton);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
 
             addToFavorites.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -76,15 +77,6 @@ public class WorkoutRecyclerViewAdapter extends RecyclerView.Adapter<WorkoutRecy
                                     databaseReference.child(workoutFirebase.getWorkoutID()).removeValue();
                                 }
                             }).setNegativeButton("No", null).show();
-                }
-            });
-
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    WorkoutFirebase workoutToBeEdited = workouts.get(getAdapterPosition());
-
-                    return true;
                 }
             });
         }
@@ -166,6 +158,10 @@ public class WorkoutRecyclerViewAdapter extends RecyclerView.Adapter<WorkoutRecy
 
     void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
+    }
+
+    void setLongClickListener(LongItemClickListener longItemClickListener) {
+        this.longItemClickListener = longItemClickListener;
     }
 
     WorkoutFirebase getWorkout(int position) {
