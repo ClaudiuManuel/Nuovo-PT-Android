@@ -12,11 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nuovo_pt.OnItemClickListener;
 import com.example.nuovo_pt.R;
-import com.example.nuovo_pt.db.clients.Client;
 import com.example.nuovo_pt.db.clients.ClientFirebase;
-import com.example.nuovo_pt.db.exercises.Exercise;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

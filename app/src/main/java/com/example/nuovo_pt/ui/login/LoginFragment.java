@@ -13,24 +13,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.example.nuovo_pt.MainActivity;
 import com.example.nuovo_pt.R;
-import com.example.nuovo_pt.db.ClientViewModel;
-import com.example.nuovo_pt.db.clients.Client;
-import com.example.nuovo_pt.ui.GridSpacing;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import java.util.List;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
     EditText email;
@@ -126,7 +116,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 //                        Toast.makeText(getContext(), "Check your email to verify your account", Toast.LENGTH_SHORT).show();
 //                    }
                     progressBar.setVisibility(View.GONE);
-                    startActivity(new Intent(getActivity(), MainActivity.class));
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("userEmail",emailString);
+                    startActivity(intent);
 
                 } else {
                     Toast.makeText(getContext(),"Failed to login!", Toast.LENGTH_LONG).show();

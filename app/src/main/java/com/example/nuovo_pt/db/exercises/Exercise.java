@@ -4,17 +4,10 @@ package com.example.nuovo_pt.db.exercises;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.example.nuovo_pt.db.workouts.Workout;
-
-@Entity(foreignKeys = @ForeignKey(entity = Workout.class,
-    parentColumns = "id",
-    childColumns = "workoutID",
-    onDelete = ForeignKey.CASCADE),
-    tableName = "exercises")
+@Entity(tableName = "exercises")
 public class Exercise {
 
     @PrimaryKey(autoGenerate = true)

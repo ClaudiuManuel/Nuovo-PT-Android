@@ -11,11 +11,6 @@
         android:label="Add a new client"
         tools:layout="@layout/fragment_add_client" />
     <fragment
-        android:id="@+id/aboutUs"
-        android:name="com.example.nuovo_pt.ui.AboutUs"
-        android:label="About us"
-        tools:layout="@layout/fragment_about_us" />
-    <fragment
         android:id="@+id/homeStartingPoint"
         android:name="com.example.nuovo_pt.ui.HomeStartingPoint"
         android:label="Home"

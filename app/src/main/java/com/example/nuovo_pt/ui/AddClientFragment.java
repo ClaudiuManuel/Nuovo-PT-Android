@@ -13,8 +13,10 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 
+import com.example.nuovo_pt.MainActivity;
 import com.example.nuovo_pt.R;
 import com.example.nuovo_pt.db.clients.ClientFirebase;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -62,10 +64,10 @@ public class AddClientFragment extends Fragment implements View.OnClickListener 
             String clientName = clientNameEditText.getText().toString();
             if(clientName.length() > 0) {
                 if (isMale) {
-                    ClientFirebase clientFirebase = new ClientFirebase(clientName,true);
+                    ClientFirebase clientFirebase = new ClientFirebase(clientName,true, FirebaseAuth.getInstance().getCurrentUser().getEmail());
                     databaseReference.child(clientName).setValue(clientFirebase);
                 } else {
-                    ClientFirebase clientFirebase = new ClientFirebase(clientName,false);
+                    ClientFirebase clientFirebase = new ClientFirebase(clientName,false,FirebaseAuth.getInstance().getCurrentUser().getEmail());
                     databaseReference.child(clientName).setValue(clientFirebase);
                 }
                 Toast feedback = Toast.makeText(getContext(), "Client added successfully:  " + clientName, Toast.LENGTH_LONG);

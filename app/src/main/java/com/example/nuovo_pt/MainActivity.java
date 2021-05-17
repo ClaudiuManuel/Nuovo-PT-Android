@@ -2,26 +2,15 @@ package com.example.nuovo_pt;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.nuovo_pt.api.ExerciseRepository;
 import com.example.nuovo_pt.api.Result;
-import com.example.nuovo_pt.db.ClientViewModel;
-import com.example.nuovo_pt.db.WorkoutViewModel;
-import com.example.nuovo_pt.db.clients.Client;
-import com.example.nuovo_pt.ui.AddClientFragment;
-import com.example.nuovo_pt.ui.ClientWorkoutsFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -36,13 +25,11 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private AppBarConfiguration mAppBarConfiguration;
-    ClientsHolder clientsHolder;
     NavigationView navigationView;
     Menu navMenu;
     NavController navController;
     DrawerLayout drawer;
     List<Result> exercises;
-    ClientViewModel clientViewModel;
     Button logout;
     private FirebaseAuth mAuth;
 
@@ -67,9 +54,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 //        navigationView.setNavigationItemSelectedListener(this);
-
-        clientsHolder = ClientsHolder.getInstance();
-        clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
 
         exercises = new ArrayList<>();
 

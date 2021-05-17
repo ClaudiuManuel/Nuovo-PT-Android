@@ -1,5 +1,6 @@
 package com.example.nuovo_pt.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,18 +10,17 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Database;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.nuovo_pt.MainActivity;
 import com.example.nuovo_pt.R;
-import com.example.nuovo_pt.db.ClientViewModel;
-import com.example.nuovo_pt.db.clients.Client;
 import com.example.nuovo_pt.db.clients.ClientFirebase;
 import com.example.nuovo_pt.db.workouts.WorkoutFirebase;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,9 +40,21 @@ public class HomeStartingPoint extends Fragment implements View.OnClickListener,
     private DatabaseReference databaseReference;
     private DatabaseReference databaseReferenceWorkouts;
     List<ClientFirebase> clientList = new ArrayList<>();
+    String userEmail;
 
     public HomeStartingPoint() {
         // Required empty public constructor
+    }
+
+    // Declare Context variable at class level in Fragment
+    private Context mContext;
+
+    // Initialise it from onAttach()
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+        userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
     }
 
 
@@ -61,7 +73,8 @@ public class HomeStartingPoint extends Fragment implements View.OnClickListener,
                 clientList.clear();
                 for(DataSnapshot clientSnapShot : snapshot.getChildren()) {
                     ClientFirebase client = clientSnapShot.getValue(ClientFirebase.class);
-                    clientList.add(client);
+                    if(client.getUserEmail().equals(userEmail))
+                        clientList.add(client);
                 }
 
                 populateClientCardviews(clientList);
@@ -138,7 +151,7 @@ public class HomeStartingPoint extends Fragment implements View.OnClickListener,
     }
 
     public void populateClientCardviews(List<ClientFirebase> clients) {
-        adapter = new ClientRecyclerViewAdapter(this.getContext(),clients);
+        adapter = new ClientRecyclerViewAdapter(mContext,clients);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
     }

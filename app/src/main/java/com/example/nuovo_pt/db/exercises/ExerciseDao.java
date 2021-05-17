@@ -6,9 +6,6 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.example.nuovo_pt.db.clients.Client;
-import com.example.nuovo_pt.db.workouts.Workout;
-
 import java.util.List;
 
 @Dao

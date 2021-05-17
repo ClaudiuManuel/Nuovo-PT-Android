@@ -4,38 +4,20 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nuovo_pt.api.ExerciseRepository;
-import com.example.nuovo_pt.api.OnGetAPIResponseCallBack;
-import com.example.nuovo_pt.api.Result;
-import com.example.nuovo_pt.db.WorkoutViewModel;
-import com.example.nuovo_pt.db.clients.Client;
 import com.example.nuovo_pt.R;
-import com.example.nuovo_pt.db.clients.ClientFirebase;
-import com.example.nuovo_pt.db.exercises.Exercise;
-import com.example.nuovo_pt.db.workouts.Workout;
 import com.example.nuovo_pt.db.workouts.WorkoutFirebase;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -45,9 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ClientWorkoutsFragment extends Fragment implements View.OnClickListener, WorkoutRecyclerViewAdapter.ItemClickListener, WorkoutRecyclerViewAdapter.LongItemClickListener {
     String clientName;

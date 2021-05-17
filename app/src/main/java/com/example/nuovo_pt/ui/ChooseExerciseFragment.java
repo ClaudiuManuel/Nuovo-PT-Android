@@ -2,18 +2,15 @@ package com.example.nuovo_pt.ui;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,11 +21,8 @@ import com.example.nuovo_pt.api.ExerciseAdapter;
 import com.example.nuovo_pt.api.ExerciseRepository;
 import com.example.nuovo_pt.api.OnGetAPIResponseCallBack;
 import com.example.nuovo_pt.api.Result;
-import com.example.nuovo_pt.db.ExerciseViewModel;
-import com.example.nuovo_pt.db.WorkoutViewModel;
 import com.example.nuovo_pt.db.exercises.Exercise;
 import com.example.nuovo_pt.db.exercises.ExerciseFirebase;
-import com.example.nuovo_pt.db.workouts.Workout;
 import com.example.nuovo_pt.db.workouts.WorkoutFirebase;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,7 +36,6 @@ import java.util.List;
 public class ChooseExerciseFragment extends Fragment {
     String workoutID;
     static String workoutMuscle;
-    ExerciseViewModel exerciseViewModel;
     ExerciseRepository exerciseRepository;
     List<Exercise> exercises = new ArrayList<>();
     private ProgressBar progressBar;
@@ -84,7 +77,6 @@ public class ChooseExerciseFragment extends Fragment {
         });
 
         RecyclerView recyclerView = view.findViewById(R.id.exercises_recyclerview);
-        exerciseViewModel = new ViewModelProvider(this).get(ExerciseViewModel.class);
         adapter = new ExerciseAdapter(this.getContext(),exercises,new OnItemClickListener() {
             @Override
             public void onItemClick(Exercise exercise) {

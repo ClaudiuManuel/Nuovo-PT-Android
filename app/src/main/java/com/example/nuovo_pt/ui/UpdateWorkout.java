@@ -22,8 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nuovo_pt.R;
-import com.example.nuovo_pt.db.WorkoutViewModel;
-import com.example.nuovo_pt.db.workouts.WorkoutFirebase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -36,7 +34,6 @@ public class UpdateWorkout extends Fragment implements View.OnClickListener, Dat
     EditText workoutNameEditText;
     private Button updateWorkoutButton;
     private Button cancelWorkoutUpdate;
-    WorkoutViewModel workoutViewModel;
     String clientName,targetedMuscle,workoutName,workoutDate,workoutLength,workoutLevel,workoutID;
     private DatabaseReference databaseReference;
     EditText dateEditText, levelEditText, workoutLengthEditText;
@@ -74,8 +71,6 @@ public class UpdateWorkout extends Fragment implements View.OnClickListener, Dat
         cancelWorkoutUpdate.setOnClickListener(this);
         updateWorkoutButton.setOnClickListener(this);
         workoutNameEditText = view.findViewById(R.id.update_editTextWorkoutName);
-
-        workoutViewModel = new ViewModelProvider(this).get(WorkoutViewModel.class);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.muscle_groups_array, android.R.layout.simple_spinner_item);
